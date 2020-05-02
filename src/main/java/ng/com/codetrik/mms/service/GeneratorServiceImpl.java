@@ -1,10 +1,7 @@
 package ng.com.codetrik.mms.service;
 
-import java.util.List;
 import java.util.UUID;
 import ng.com.codetrik.mms.model.Generator;
-import ng.com.codetrik.mms.model.Operator;
-import ng.com.codetrik.mms.model.Recipient;
 import ng.com.codetrik.mms.repository.GeneratorRepository;
 import ng.com.codetrik.mms.repository.OperatorRepository;
 import ng.com.codetrik.mms.repository.SiteRepository;
@@ -39,16 +36,16 @@ public class GeneratorServiceImpl implements GeneratorService{
      
     @Override
     public Generator createGenerator(Generator gen) {
-        Operator opp = operatorRepo.findByEmail(gen.getOperatorEmail());//get Operator associated to thos generator
+        var opp = operatorRepo.findByEmail(gen.getOperatorEmail());//get Operator associated to thos generator
         gen.setOperator(opp);//set operator asscociated to this generator
         gen.setSite(siteRepo.findBySiteCode(gen.getSiteCode()));//get and set site associated to this generator
-        Generator g = genRepo.saveAndFlush(gen);//save generator in to the DB
-        List<Recipient> recipients = opp.getRecipient(); //get list of recipients associated to the Operator
+        var g = genRepo.saveAndFlush(gen);//save generator in to the DB
+        var recipients = opp.getRecipient(); //get list of recipients associated to the Operator
         try{
-            SimpleMailMessage message = new SimpleMailMessage();//create simple message instance
-            String template = g.toString();//build template message from toString
+            var message = new SimpleMailMessage();//create simple message instance
+            var template = g.toString();//build template message from toString
             if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
-                String[] recp = new String[recipients.size()];//create empty array of recipients
+                var recp = new String[recipients.size()];//create empty array of recipients
                 recipients.forEach((r) -> {
                     recp[recipients.indexOf(r)] = r.getEmail();
                 });
@@ -68,14 +65,14 @@ public class GeneratorServiceImpl implements GeneratorService{
     @Override
     public Generator updateGenerator(Generator gen) {
         gen.setId(gen.getId());
-        Generator g = genRepo.saveAndFlush(gen);//update the generator
-        Operator opp = operatorRepo.findByEmail(g.getOperatorEmail());//get Operator associated to the updated generator
-        List<Recipient> recipients = opp.getRecipient(); //get recipients associated to this operator       
+        var g = genRepo.saveAndFlush(gen);//update the generator
+        var opp = operatorRepo.findByEmail(g.getOperatorEmail());//get Operator associated to the updated generator
+        var recipients = opp.getRecipient(); //get recipients associated to this operator       
         try{
-            SimpleMailMessage message = new SimpleMailMessage();//create simple message instance
-            String template = g.toString();//build template message from toString      
+            var message = new SimpleMailMessage();//create simple message instance
+            var template = g.toString();//build template message from toString      
             if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
-                String[] recp = new String[recipients.size()];//create empty array of recipients
+                var recp = new String[recipients.size()];//create empty array of recipients
                 recipients.forEach((r) -> {
                     recp[recipients.indexOf(r)] = r.getEmail();
                 });
@@ -94,7 +91,7 @@ public class GeneratorServiceImpl implements GeneratorService{
 
     @Override
     public Generator queryBySerialNumber(String serialNumber) {
-        Generator gen = genRepo.findBySerialNumber(serialNumber);
+        var gen = genRepo.findBySerialNumber(serialNumber);
         gen.setOperatorEmail(gen.getOperator().getEmail());//this made the operator email available during update for email recipients findings
         gen.setSiteCode(gen.getSite().getSiteCode());
         return gen;
@@ -102,7 +99,7 @@ public class GeneratorServiceImpl implements GeneratorService{
 
     @Override
     public Generator queryById(UUID id) {
-        Generator gen = genRepo.findById(id).get();
+        var gen = genRepo.findById(id).get();
         gen.setOperatorEmail(gen.getOperator().getEmail());//this made the operator email available during update for email recipients findings
         gen.setSiteCode(gen.getSite().getSiteCode());
         return gen;

@@ -1,7 +1,6 @@
 package ng.com.codetrik.mms.service;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -9,8 +8,6 @@ import java.util.List;
 import java.util.UUID;
 import ng.com.codetrik.mms.model.Generator;
 import ng.com.codetrik.mms.model.GeneratorRuntime;
-import ng.com.codetrik.mms.model.Operator;
-import ng.com.codetrik.mms.model.Recipient;
 import ng.com.codetrik.mms.model.enumeration.Months;
 import ng.com.codetrik.mms.repository.GeneratorRepository;
 import ng.com.codetrik.mms.repository.GeneratorRuntimeRepository;
@@ -44,39 +41,39 @@ public class GeneratorRuntimeServiceImpl implements GeneratorRuntimeService{
     private final Logger LOGGER = LoggerFactory.getLogger(GeneratorRuntimeServiceImpl.class);    
     @Override
     public GeneratorRuntime createRuntime(GeneratorRuntime genRun) {
-        Generator gen = genRepo.findBySerialNumber(genRun.getGeneratorSerialNumber());
+        var gen = genRepo.findBySerialNumber(genRun.getGeneratorSerialNumber());
         genRun.setGenerator(gen);
         //estimate the start zoneddate and time from the provided transient variables
         genRun.setStartTime(LocalDateTime.of(genRun.getYear(), genRun.getMonth(),genRun.getStartDay(),genRun.getStartHour(), genRun.getStartMinute()).atZone(ZoneId.of("Africa/Lagos")));
         //estimate the stop date and time from the provided transient variables
         genRun.setStopTime(LocalDateTime.of(genRun.getYear(), genRun.getMonth(), genRun.getStopDay(), genRun.getStopHour(), genRun.getStopMinute()).atZone(ZoneId.of("Africa/Lagos")));
         //estimate the runtime 
-        Instant start = genRun.getStartTime().toInstant();
-        Instant stop = genRun.getStopTime().toInstant();
-        Duration duration = Duration.between(start, stop);
-        int durationHoursPart = duration.toHoursPart();
-        int durationMinutesPart = duration.toMinutesPart();
-        int durationSecondsPart = duration.toSecondsPart();
-        LocalTime runtime = LocalTime.of(durationHoursPart,durationMinutesPart,durationSecondsPart);
+        var start = genRun.getStartTime().toInstant();
+        var stop = genRun.getStopTime().toInstant();
+        var duration = Duration.between(start, stop);
+        var durationHoursPart = duration.toHoursPart();
+        var durationMinutesPart = duration.toMinutesPart();
+        var durationSecondsPart = duration.toSecondsPart();
+        var runtime = LocalTime.of(durationHoursPart,durationMinutesPart,durationSecondsPart);
         genRun.setRuntime(runtime); 
         
         //optaim enum value for month
         genRun.setEnumMonth(Months.values()[genRun.getMonth()-1]);
         
         //save to the DB
-        GeneratorRuntime genRunReturned = genRunRepo.saveAndFlush(genRun);
+        var genRunReturned = genRunRepo.saveAndFlush(genRun);
         
         //GET operator associated to the generator associated with the provided serial number
-        Operator opp = gen.getOperator();
+        var opp = gen.getOperator();
         
-        List<Recipient> recipients = opp.getRecipient(); //get list of recipients associated to the Operator          
+        var recipients = opp.getRecipient(); //get list of recipients associated to the Operator          
         try{
-            SimpleMailMessage message = new SimpleMailMessage();//create simple message instance
-            String template = genRunReturned.toString() + ", \nGenerator Name = " +  gen.getName() + ", \nGenerator Serial = " +  gen.getSerialNumber() + 
+            var message = new SimpleMailMessage();//create simple message instance
+            var template = genRunReturned.toString() + ", \nGenerator Name = " +  gen.getName() + ", \nGenerator Serial = " +  gen.getSerialNumber() + 
                     ", \nSite = " +  gen.getSite().getName();//build template message from toString
             
             if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
-                String[] recp = new String[recipients.size()];//create empty array of recipients
+                var recp = new String[recipients.size()];//create empty array of recipients
                 recipients.forEach((r) -> {
                     recp[recipients.indexOf(r)] = r.getEmail();
                 });
@@ -100,7 +97,7 @@ public class GeneratorRuntimeServiceImpl implements GeneratorRuntimeService{
 
     @Override
     public GeneratorRuntime queryById(UUID id) {
-       GeneratorRuntime gr = genRunRepo.findById(id).get();
+       var gr = genRunRepo.findById(id).get();
        gr.setYear(gr.getStartTime().getYear());
        gr.setMonth(gr.getStartTime().getMonthValue());
        
@@ -119,39 +116,39 @@ public class GeneratorRuntimeServiceImpl implements GeneratorRuntimeService{
 
     @Override
     public GeneratorRuntime updateRuntime(GeneratorRuntime genRun) {
-        Generator gen = genRepo.findBySerialNumber(genRun.getGeneratorSerialNumber());
+        var gen = genRepo.findBySerialNumber(genRun.getGeneratorSerialNumber());
         genRun.setGenerator(gen);
         //estimate the start zoneddate and time from the provided transient variables
         genRun.setStartTime(LocalDateTime.of(genRun.getYear(), genRun.getMonth(),genRun.getStartDay(),genRun.getStartHour(), genRun.getStartMinute()).atZone(ZoneId.of("Africa/Lagos")));
         //estimate the stop date and time from the provided transient variables
         genRun.setStopTime(LocalDateTime.of(genRun.getYear(), genRun.getMonth(), genRun.getStopDay(), genRun.getStopHour(), genRun.getStopMinute()).atZone(ZoneId.of("Africa/Lagos")));
         //estimate the runtime 
-        Instant start = genRun.getStartTime().toInstant();
-        Instant stop = genRun.getStopTime().toInstant();
-        Duration duration = Duration.between(start, stop);
-        int durationHoursPart = duration.toHoursPart();
-        int durationMinutesPart = duration.toMinutesPart();
-        int durationSecondsPart = duration.toSecondsPart();
-        LocalTime runtime = LocalTime.of(durationHoursPart,durationMinutesPart,durationSecondsPart);
+        var start = genRun.getStartTime().toInstant();
+        var stop = genRun.getStopTime().toInstant();
+        var duration = Duration.between(start, stop);
+        var durationHoursPart = duration.toHoursPart();
+        var durationMinutesPart = duration.toMinutesPart();
+        var durationSecondsPart = duration.toSecondsPart();
+        var runtime = LocalTime.of(durationHoursPart,durationMinutesPart,durationSecondsPart);
         genRun.setRuntime(runtime); 
         
         //obtaim enum value for month
         genRun.setEnumMonth(Months.values()[genRun.getMonth()-1]);
         
         //save to the DB
-        GeneratorRuntime genRunReturned = genRunRepo.saveAndFlush(genRun);
+        var genRunReturned = genRunRepo.saveAndFlush(genRun);
         
         //GET operator associated to the generator associated with the provided serial number
-        Operator opp = gen.getOperator();
+        var opp = gen.getOperator();
         
-        List<Recipient> recipients = opp.getRecipient(); //get list of recipients associated to the Operator          
+        var recipients = opp.getRecipient(); //get list of recipients associated to the Operator          
         try{
-            SimpleMailMessage message = new SimpleMailMessage();//create simple message instance
-            String template = genRunReturned.toString() + ", \nGenerator Name = " +  gen.getName() + ", \nGenerator Serial = " +  gen.getSerialNumber() + 
+            var message = new SimpleMailMessage();//create simple message instance
+            var template = genRunReturned.toString() + ", \nGenerator Name = " +  gen.getName() + ", \nGenerator Serial = " +  gen.getSerialNumber() + 
                     ", \nSite = " +  gen.getSite().getName();//build template message from toString
             
             if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
-                String[] recp = new String[recipients.size()];//create empty array of recipients
+                var recp = new String[recipients.size()];//create empty array of recipients
                 recipients.forEach((r) -> {
                     recp[recipients.indexOf(r)] = r.getEmail();
                 });

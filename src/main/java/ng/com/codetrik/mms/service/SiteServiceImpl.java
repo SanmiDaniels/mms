@@ -39,15 +39,15 @@ JavaMailSender emailSender;
 
     @Override
     public Site createSite(Site site) {
-        Operator opp = operatorRepo.findByEmail(site.getOperatorEmail());//first obtain the operator to be mapped to this site
+        var opp = operatorRepo.findByEmail(site.getOperatorEmail());//first obtain the operator to be mapped to this site
         site.setOperator(opp);//set operator associated to this site
-        Site s =  siteRepo.saveAndFlush(site);
-        List<Recipient> recipients = opp.getRecipient(); //get list of recipients associated to the Operator        
+        var s =  siteRepo.saveAndFlush(site);
+        var recipients = opp.getRecipient(); //get list of recipients associated to the Operator        
         try{
-            SimpleMailMessage message = new SimpleMailMessage();//create simple message instance
-            String template = s.toString();//build template message from toString
+            var message = new SimpleMailMessage();//create simple message instance
+            var template = s.toString();//build template message from toString
             if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
-                String[] recp = new String[recipients.size()];//create empty array of recipients
+                var recp = new String[recipients.size()];//create empty array of recipients
                 recipients.forEach((r) -> {
                     recp[recipients.indexOf(r)] = r.getEmail();
                 });
@@ -68,7 +68,7 @@ JavaMailSender emailSender;
     //this have to be called first by front end before update can be performed
     @Override
     public Site queryBySiteCode(String siteCode) {
-        Site s = siteRepo.findBySiteCode(siteCode);//site get queried from the database
+        var s = siteRepo.findBySiteCode(siteCode);//site get queried from the database
         s.setOperatorEmail(s.getOperator().getEmail());//this made the operator email available during update for email recipients findings
         return s;//site get returned back to front end
     }
@@ -76,7 +76,7 @@ JavaMailSender emailSender;
     
     @Override
     public Site queryById(UUID id) {
-        Site s =  siteRepo.findById(id).get();//site get queried from the database
+        var s =  siteRepo.findById(id).get();//site get queried from the database
         s.setOperatorEmail(s.getOperator().getEmail());//this made the operator email available during update for email recipients findings
         return s;//site get returned back to front end
     }
@@ -84,14 +84,14 @@ JavaMailSender emailSender;
     @Override
     public Site updateSite(Site site) {
         site.setId(site.getId());
-        Site s =  siteRepo.saveAndFlush(site);//Site gotten back from the frontend get update to the DB
-        Operator opp = operatorRepo.findByEmail(site.getOperatorEmail());
-        List<Recipient> recipients = opp.getRecipient(); //get list of recipients associated to the Operator        
+        var s =  siteRepo.saveAndFlush(site);//Site gotten back from the frontend get update to the DB
+        var opp = operatorRepo.findByEmail(site.getOperatorEmail());
+        var recipients = opp.getRecipient(); //get list of recipients associated to the Operator        
         try{
-            SimpleMailMessage message = new SimpleMailMessage();//create simple message instance
-            String template = s.toString();//build template message from toString
+            var message = new SimpleMailMessage();//create simple message instance
+            var template = s.toString();//build template message from toString
             if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
-                String[] recp = new String[recipients.size()];//create empty array of recipients
+                var recp = new String[recipients.size()];//create empty array of recipients
                 recipients.forEach((r) -> {
                     recp[recipients.indexOf(r)] = r.getEmail();
                 });
@@ -110,7 +110,7 @@ JavaMailSender emailSender;
 
     @Override
     public List<String> allThisOperatorSiteCode(String operatorEmail) {
-        List<Site> sites = operatorRepo.findByEmail(operatorEmail).getSite();
+        var sites = operatorRepo.findByEmail(operatorEmail).getSite();
         List<String> siteCodeList = new ArrayList<>();
         sites.forEach((s)->{
             siteCodeList.add(s.getSiteCode());
@@ -120,7 +120,7 @@ JavaMailSender emailSender;
 
     @Override
     public List<String> allThisOperatorSite(String operatorEmail) {
-       List<Site> sites = operatorRepo.findByEmail(operatorEmail).getSite();
+        var sites = operatorRepo.findByEmail(operatorEmail).getSite();
         List<String> siteNameList = new ArrayList<>();
         sites.forEach((s)->{
             siteNameList.add(s.getName());
@@ -132,7 +132,7 @@ JavaMailSender emailSender;
     @Override
     public Map<String, String> allThisOperatorSiteCodeAndSite(String operatorEmail) {
         Map<String, String> siteCodeWithSite = new HashMap<>();
-        List<Site> sites = operatorRepo.findByEmail(operatorEmail).getSite();
+        var sites = operatorRepo.findByEmail(operatorEmail).getSite();
         sites.forEach((s)->{
             siteCodeWithSite.put(s.getSiteCode(), s.getName());
         });

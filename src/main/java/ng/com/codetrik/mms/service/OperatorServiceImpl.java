@@ -34,10 +34,10 @@ public class OperatorServiceImpl implements OperatorService{
     //email should only be sent to the operator email alone upon creation since its highly likely recipeint has not been set for such operator    
     @Override
     public Operator createOperator(Operator operator) {
-        Operator opp = operatorRepo.saveAndFlush(operator);
+        var opp = operatorRepo.saveAndFlush(operator);
         try{//senting mail to the operator email address once persisting is sucessful
-            SimpleMailMessage message = new SimpleMailMessage(); //use simple message to generate mesg
-            String template = opp.toString();
+            var message = new SimpleMailMessage(); //use simple message to generate mesg
+            var template = opp.toString();
             message.setTo(opp.getEmail()); 
             message.setSubject("Your Company is added to our platform as mini-grid operator"); 
             message.setText(template);
@@ -62,13 +62,13 @@ public class OperatorServiceImpl implements OperatorService{
     @Override
     public Operator updateOperator(Operator operator) {
         operator.setId(operator.getId());
-        Operator opp = operatorRepo.saveAndFlush(operator);
-        List<Recipient> recipients = opp.getRecipient(); //get recipients associated to this operator 
+        var opp = operatorRepo.saveAndFlush(operator);
+        var recipients = opp.getRecipient(); //get recipients associated to this operator 
         try{
-            SimpleMailMessage message = new SimpleMailMessage();//create simple message instance
-            String template = opp.toString();//build template message from toString            
+            var message = new SimpleMailMessage();//create simple message instance
+            var template = opp.toString();//build template message from toString            
             if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null or empty
-                String[] recp = new String[recipients.size()];//create empty array of size recipients
+                var recp = new String[recipients.size()];//create empty array of size recipients
                 recipients.forEach((r) -> {
                     recp[recipients.indexOf(r)] = r.getEmail();
                 });

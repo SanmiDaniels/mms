@@ -4,9 +4,6 @@ package ng.com.codetrik.mms.service;
 import java.util.List;
 import java.util.UUID;
 import ng.com.codetrik.mms.model.Expenditure;
-import ng.com.codetrik.mms.model.Operator;
-import ng.com.codetrik.mms.model.Recipient;
-import ng.com.codetrik.mms.model.Site;
 import ng.com.codetrik.mms.model.enumeration.ExpenditureStatus;
 import ng.com.codetrik.mms.model.enumeration.ExpenditureType;
 import ng.com.codetrik.mms.model.enumeration.Months;
@@ -41,20 +38,20 @@ public class ExpenditureServiceImpl implements ExpenditureService{
     
     @Override
     public Expenditure createExpenditure(Expenditure exp) {
-        Operator opp = operatorRepo.findByEmail(exp.getOperatorEmail());//get operator associated to this mail
+        var opp = operatorRepo.findByEmail(exp.getOperatorEmail());//get operator associated to this mail
         exp.setOperator(opp);//set the ssociated operator tp this expenditure
-        Site site = siteRepo.findBySiteCode(exp.getSiteCode());//get site associated to this expenditure
+        var site = siteRepo.findBySiteCode(exp.getSiteCode());//get site associated to this expenditure
         exp.setSite(site);//set the associated site to this expenditure
         exp.setEnumType(ExpenditureType.values()[exp.getType()]);
         exp.setEnumStatus(ExpenditureStatus.values()[exp.getStatus()]);
         exp.setEnumMonth(Months.values()[exp.getMonth()-1]);
-        Expenditure expp = expenditureRepo.saveAndFlush(exp);
-        List<Recipient> recipients = opp.getRecipient(); //get list of recipients associated to the Operator
+        var expp = expenditureRepo.saveAndFlush(exp);
+        var recipients = opp.getRecipient(); //get list of recipients associated to the Operator
         try{
-            SimpleMailMessage message = new SimpleMailMessage();//create simple message instance
-            String template = expp.toString();//build template message from toString
+            var message = new SimpleMailMessage();//create simple message instance
+            var template = expp.toString();//build template message from toString
             if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
-                String[] recp = new String[recipients.size()];//create empty array of recipients
+                var recp = new String[recipients.size()];//create empty array of recipients
                 recipients.forEach((r) -> {
                     recp[recipients.indexOf(r)] = r.getEmail();
                 });
@@ -75,18 +72,18 @@ public class ExpenditureServiceImpl implements ExpenditureService{
 
     @Override
     public Expenditure updateExpenditire(Expenditure exp) {
-       Operator opp = operatorRepo.findByEmail(exp.getOperatorEmail());//get operator associated to this mail
+       var opp = operatorRepo.findByEmail(exp.getOperatorEmail());//get operator associated to this mail
         exp.setOperator(opp);//set the ssociated operator tp this expenditure
-        Site site = siteRepo.findBySiteCode(exp.getSiteCode());//get site associated to this expenditure
+        var site = siteRepo.findBySiteCode(exp.getSiteCode());//get site associated to this expenditure
         exp.setSite(site);//set the associated site to this expenditure
         exp.setEnumType(ExpenditureType.values()[exp.getType()]);
         exp.setEnumStatus(ExpenditureStatus.values()[exp.getStatus()]);
         exp.setEnumMonth(Months.values()[exp.getMonth()-1]);
-        Expenditure expp = expenditureRepo.saveAndFlush(exp);
-        List<Recipient> recipients = opp.getRecipient(); //get list of recipients associated to the Operator
+        var expp = expenditureRepo.saveAndFlush(exp);
+        var recipients = opp.getRecipient(); //get list of recipients associated to the Operator
         try{
-            SimpleMailMessage message = new SimpleMailMessage();//create simple message instance
-            String template = expp.toString();//build template message from toString
+            var message = new SimpleMailMessage();//create simple message instance
+            var template = expp.toString();//build template message from toString
             if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
                 String[] recp = new String[recipients.size()];//create empty array of recipients
                 recipients.forEach((r) -> {
@@ -109,7 +106,7 @@ public class ExpenditureServiceImpl implements ExpenditureService{
 
     @Override
     public Expenditure queryById(UUID id) {
-       Expenditure exp = expenditureRepo.findById(id).get();
+       var exp = expenditureRepo.findById(id).get();
        exp.setMonth(exp.getEnumMonth().ordinal());
        exp.setType(exp.getEnumType().ordinal());
        exp.setStatus(exp.getEnumStatus().ordinal());
@@ -120,7 +117,7 @@ public class ExpenditureServiceImpl implements ExpenditureService{
 
     @Override
     public List<Expenditure> queryByRequestorEmail(String requestorEmail) {
-        List<Expenditure> expenditures = expenditureRepo.findByRequestorEmail(requestorEmail);
+        var expenditures = expenditureRepo.findByRequestorEmail(requestorEmail);
         expenditures.forEach((exp)->{
                 exp.setMonth(exp.getEnumMonth().ordinal());
                 exp.setType(exp.getEnumType().ordinal());

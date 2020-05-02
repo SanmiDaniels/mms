@@ -31,10 +31,10 @@ public class RecipientServiceImpl implements RecipientService{
     @Override
     public Recipient createRecipient(Recipient recipient) {//do not send to list of recipient
         recipient.setOperator(operatorRepo.findByEmail(recipient.getOperatorEmail()));
-        Recipient re = recipientRepo.saveAndFlush(recipient);
+        var re = recipientRepo.saveAndFlush(recipient);
         try{
-            SimpleMailMessage message = new SimpleMailMessage();
-            String template = re.toString();
+            var message = new SimpleMailMessage();
+            var template = re.toString();
             message.setTo(re.getOperatorEmail());
             message.setSubject("Your Company added a new recipient with the following details: "); 
             message.setText(template);
@@ -48,10 +48,10 @@ public class RecipientServiceImpl implements RecipientService{
     @Override
     public Recipient updateRecipient(Recipient recipient) {//do not send to list of recipient
         recipient.setId(recipient.getId());
-        Recipient re = recipientRepo.saveAndFlush(recipient);
+        var re = recipientRepo.saveAndFlush(recipient);
         try{
-            SimpleMailMessage message = new SimpleMailMessage();
-            String template = re.toString();
+            var message = new SimpleMailMessage();
+            var template = re.toString();
             message.setTo(re.getOperatorEmail());
             message.setSubject("Your Company added a new recipeint with the following details: "); 
             message.setText(template);
@@ -64,7 +64,7 @@ public class RecipientServiceImpl implements RecipientService{
 
     @Override
     public Recipient queryById(UUID id) {
-        Recipient re = recipientRepo.findById(id).get();
+        var re = recipientRepo.findById(id).get();
         re.setOperatorEmail(re.getOperator().getEmail());
         return re;
     }
