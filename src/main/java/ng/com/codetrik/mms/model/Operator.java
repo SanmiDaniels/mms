@@ -25,7 +25,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Value;
 
 @Entity
-@SQLDelete(sql = "update operators set is_deleted=true where id=?")
+@SQLDelete(sql = "update operator set is_deleted=true where id=?")
 @Where(clause = "is_deleted=false")
 @Table(name = "operator",schema = "minigrid_management_system")
 @Cacheable(value = true)

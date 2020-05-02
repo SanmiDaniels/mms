@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 @Entity
 @Table(name = "site",schema = "minigrid_management_system")
-@SQLDelete(sql = "update sites set is_deleted=true where id=?")
+@SQLDelete(sql = "update site set is_deleted=true where id=?")
 @Where(clause = "is_deleted=false")
 @Cacheable
 @Data
