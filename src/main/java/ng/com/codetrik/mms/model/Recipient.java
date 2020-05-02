@@ -20,21 +20,17 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 import org.springframework.beans.factory.annotation.Value;
 
-@Entity
-@SQLDelete(sql = "update recipient set is_deleted=true where id=?")
-@Where(clause = "is_deleted=false")
-@Table(name = "recipient" ,schema = "minigrid_management_system")
-@Data
+@Entity @SQLDelete(sql = "update recipient set is_deleted=true where id=?") @Where(clause = "is_deleted=false")
+@Table(name = "recipient" ,schema = "minigrid_management_system") @Data
 public class Recipient implements Serializable {
     /********************Table Fields******************/    
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
+    @Id @GeneratedValue(generator = "UUID") @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
     @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID id;
     
     @NotNull
     private String name;
+    
     @Email(message="value provided for email does not look like an email")
     private String email;
     
@@ -50,9 +46,7 @@ public class Recipient implements Serializable {
     
     
     /****Transient variables***********/
-    @Transient
-    @Email(message="value provided for operatorEmail does not look like an email")
-    @NotNull
+    @Transient @Email(message="value provided for operatorEmail does not look like an email") @NotNull
     private String operatorEmail;//to be use in indexing the operator that owns this recipient
     
     /********constructor**************/

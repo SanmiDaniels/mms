@@ -24,26 +24,18 @@ import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Value;
 
-@Entity
-@SQLDelete(sql = "update operator set is_deleted=true where id=?")
-@Where(clause = "is_deleted=false")
-@Table(name = "operator",schema = "minigrid_management_system")
-@Cacheable(value = true)
-@Data
+@Entity @SQLDelete(sql = "update operator set is_deleted=true where id=?") @Where(clause = "is_deleted=false")
+@Table(name = "operator",schema = "minigrid_management_system") @Cacheable(value = true) @Data
 public class Operator implements Serializable {
     
     /*****************Table Fields**********************************/
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")//generates Version4 UUID which is Random number based UUID
+    @Id @GeneratedValue(generator = "UUID") @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")//generates Version4 UUID which is Random number based UUID
     @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID id;
     
     private String name;//name of the mini-grid operator|developer
     
-    @Email(message = "email address not valid")
-    @Column(unique = true)
-    @NotNull
+    @Email(message = "email address not valid") @Column(unique = true) @NotNull
     private String email;//email address of the operator|developer
     
     @Length(min = 8,message = "password cant be less than 8 characters")
@@ -54,16 +46,13 @@ public class Operator implements Serializable {
     
     private String address;//head office address of the opperator 
     
-    @UpdateTimestamp
-    @Column(name="last_updated_time")
+    @UpdateTimestamp @Column(name="last_updated_time")
     private LocalDateTime lastUpdatedTime;//automatically picked local last updated time 
     
-    @CreationTimestamp
-    @Column(name="last_created_time")
+    @CreationTimestamp @Column(name="last_created_time")
     private LocalDateTime lastCreatedTime;//automatically picked local last created time 
     
-    @Value("false")
-    @Column(name="is_deleted")
+    @Value("false") @Column(name="is_deleted")
     private boolean isDeleted;//flag for soft delete
     
     @OneToMany(mappedBy = "operator")

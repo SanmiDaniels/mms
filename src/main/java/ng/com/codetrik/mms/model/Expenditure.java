@@ -36,39 +36,29 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.beans.factory.annotation.Value;
 
-@Entity
-@SQLDelete(sql = "update expenditure set is_deleted=true where id=?")
-@Where(clause = "is_deleted=false")
-@Table(name = "expenditure" ,schema = "minigrid_management_system")
-@Data
+@Entity @SQLDelete(sql = "update expenditure set is_deleted=true where id=?") @Where(clause = "is_deleted=false")
+@Table(name = "expenditure" ,schema = "minigrid_management_system") @Data
 public class Expenditure implements Serializable {
     
     /*******************************Table Field variables****************************/
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
-    @Type(type = "org.hibernate.type.UUIDCharType")
+    @Id @GeneratedValue(generator = "UUID") @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator") @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID id;
     
     private Double ammount;
     
-    @Enumerated(EnumType.STRING)
-    @Column(name="expenditure_type")
+    @Enumerated(EnumType.STRING) @Column(name="expenditure_type")
     private ExpenditureType enumType;//to be derived at service-tier using the type value provided
     
     @Enumerated(EnumType.STRING)
     private ExpenditureStatus enumStatus;
     
-    @Enumerated(EnumType.STRING)
-    @Column(name="request_month")
+    @Enumerated(EnumType.STRING) @Column(name="request_month")
     private Months enumMonth;//to be derived at service-tier using the month value provided
     
-    @Column(name="request_from")
-    @NotNull
+    @Column(name="request_from") @NotNull
     private String name;
     
-    @NotNull
-    @Column(name="request_year")
+    @NotNull @Column(name="request_year")
     private int year;
     
     @ManyToOne
@@ -78,55 +68,37 @@ public class Expenditure implements Serializable {
     private Site site; //site associated to this expenditure
     
     
-    @UpdateTimestamp
-    @Column(name="last_processed_date")
+    @UpdateTimestamp @Column(name="last_processed_date")
     private LocalDateTime dateProcessed;//automatically picked local last updated time 
     
-    @CreationTimestamp
-    @Column(name="expenditure_creation_date")
+    @CreationTimestamp @Column(name="expenditure_creation_date")
     private LocalDateTime dateFiled;//automatically picked local last created time
     
-    @Value("false")
-    @Column(name="is_deleted")
+    @Value("false") @Column(name="is_deleted")
     private boolean isDeleted; //field for soft delete
     
     @NotNull
     private String description; //expenditure description
     
-    @NotNull
-    @Email(message="requestBy property must be a valid email of the person requesting for this expenditure")
-    @Column(name="request_by")
+    @NotNull @Email(message="requestBy property must be a valid email of the person requesting for this expenditure") @Column(name="request_by")
     private String requestorEmail;
     
     /***************************Transient variables********************************/
-    @NotNull
-    @Transient
-    @Max(value=12)
-    @Min(value=1)
+    @NotNull @Transient @Max(value=12) @Min(value=1)
     private int month;//to be use in enumerating the enumMonth
     
-    @NotNull
-    @Transient
-    @Max(value=6)
-    @Min(value=0)
+    @NotNull @Transient @Max(value=6) @Min(value=0)
     private int type;//to be use in enumerating the enumType
 
-    @NotNull
-    @Transient
-    @Max(value=3)
-    @Min(value=0)
+    @NotNull @Transient @Max(value=3) @Min(value=0)
     private int status;//to be use in enumerating the enumType    
    
-    @Transient
-    @NotNull
-    @Email
+    @Transient @NotNull @Email
     private String operatorEmail;//opperators operatorEmail to be use in indexing opperator whose expenditure is associated to
     
     @NotNull
     private String siteCode;
             
-
-
     /****************constructors************************************/    
     public Expenditure(){}
     
@@ -137,8 +109,6 @@ public class Expenditure implements Serializable {
     }
    
     /********************************Getters and Setters*******************************/
-
-    
     @Override
     public String toString() {
         return "Expenditure internal generated id = " + id + ", \nammount = " + ammount + ", \nenumType = " + enumType.toString() + 

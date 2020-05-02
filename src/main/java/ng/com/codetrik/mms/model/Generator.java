@@ -24,16 +24,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.beans.factory.annotation.Value;
 
-@Entity
-@SQLDelete(sql = "update generator set is_deleted=true where id=?")
-@Where(clause = "is_deleted=false")
-@Table(name = "generator" ,schema = "minigrid_management_system")
-@Data
+@Entity @SQLDelete(sql = "update generator set is_deleted=true where id=?") @Where(clause = "is_deleted=false")
+@Table(name = "generator" ,schema = "minigrid_management_system") @Data
 public class Generator implements Serializable {
     /**************************Table field**********************************/
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
+    @Id @GeneratedValue(generator = "UUID") @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator") 
     @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID id;
     
@@ -52,30 +47,23 @@ public class Generator implements Serializable {
     @OneToMany(mappedBy = "generator")
     private List<GeneratorRuntime> generatorRuntime;//generator runtime(s) associated to the generator
 
-    @UpdateTimestamp
-    @Column(name="last_updated_time")
+    @UpdateTimestamp @Column(name="last_updated_time")
     private LocalDateTime lastUpdatedTime;//automatically picked last updated time 
     
-    @CreationTimestamp
-    @Column(name="last_created_time")
+    @CreationTimestamp @Column(name="last_created_time")
     private LocalDateTime lastCreatedTime;//automatically picked last created time
     
-    @NotNull
-    @Column(name = "serial_number",unique = true)
+    @NotNull @Column(name = "serial_number",unique = true)
     private String serialNumber;//serial number associated with the generator
     
-    @Value("false")
-    @Column(name="is_deleted")
+    @Value("false") @Column(name="is_deleted")
     private boolean isDeleted;//flag for soft delete
     
     /************************Transient variables ****************************/
-    @Transient
-    @Email
-    @NotNull
+    @Transient @Email @NotNull
     private String operatorEmail;//to be use in indexing operator and must be provided
     
-    @Transient
-    @NotNull
+    @Transient @NotNull
     private String siteCode;//to be use in indexing site and must be provided
     
     /**********************constructors*******************************/    

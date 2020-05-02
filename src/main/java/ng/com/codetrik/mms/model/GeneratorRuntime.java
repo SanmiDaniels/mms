@@ -40,25 +40,18 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.beans.factory.annotation.Value;
 
-@Entity
-@SQLDelete(sql = "update generator_runtime set is_deleted=true where id=?")
-@Where(clause = "is_deleted=false")
-@Table(name = "generator_runtime",schema = "minigrid_management_system")
-@Data
+@Entity @SQLDelete(sql = "update generator_runtime set is_deleted=true where id=?") @Where(clause = "is_deleted=false")
+@Table(name = "generator_runtime",schema = "minigrid_management_system") @Data
 public class GeneratorRuntime implements Serializable {
     /*****************************Table Fields****************************/
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
+    @Id @GeneratedValue(generator = "UUID") @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
     @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID id;
     
-    @UpdateTimestamp
-    @Column(name="last_updated_time")
+    @UpdateTimestamp @Column(name="last_updated_time")
     private LocalDateTime lastUpdatedTime;//automatically picked local last updated time 
     
-    @CreationTimestamp
-    @Column(name="last_created_time")
+    @CreationTimestamp @Column(name="last_created_time")
     private LocalDateTime lastCreatedTime;//automatically picked local last created time  
     
     @Column(name="start_time")
@@ -69,24 +62,20 @@ public class GeneratorRuntime implements Serializable {
     
     private LocalTime runtime;//value to be derived at service level
     
-    @Enumerated(EnumType.STRING)
-    @Column(name = "run_month")
+    @Enumerated(EnumType.STRING) @Column(name = "run_month")
     private Months enumMonth;
     
     @ManyToOne
     private Generator generator;//generator associated to the recorded runtime
             
-    @Value("false")
-    @Column(name="is_deleted")
+    @Value("false") @Column(name="is_deleted")
     private boolean isDeleted;//flag for soft delete
     
-    @NotNull
-    @Column(name="diesel_start_level")
+    @NotNull @Column(name="diesel_start_level")
     private Double dieselStartLevel;
     
     
-    @NotNull
-    @Column(name="diesel_stop_level")
+    @NotNull @Column(name="diesel_stop_level")
     private Double dieselStopLevel;
     
     /************************************Transient variables****************************/
@@ -95,57 +84,34 @@ public class GeneratorRuntime implements Serializable {
     siteCode will be use in indexing site which we can then get list of generator related to that site and opperator that own the site, 
     send the generators relating to such site as list to user, expecting feedback of exact generator to register this run-time to
 */
-    @Transient   
-    @NotNull
+    @Transient @NotNull
     private String siteCode;
     
-    @Transient
-    @NotNull
+    @Transient @NotNull
     private String generatorSerialNumber;//set this from the feedback of selected generator at dropped down provided at UI
     
     @NotNull
     private int year;//will be the same for both start and stop runtime detail
     
-    @NotNull
-    @Transient
-    @Min(value = 1)
-    @Max(value = 12)
+    @NotNull @Transient @Min(value = 1) @Max(value = 12)
     private int Month;//will be the same for both start and stop runtime detail
     
-    @NotNull
-    @Transient
-    @Max(value=31)
-    @Min(value=1)
+    @NotNull @Transient @Max(value=31) @Min(value=1)
     private int StartDay;//instant day of the week the generator was started
     
-    @NotNull
-    @Transient
-    @Max(value=23)
-    @Min(value=0)
+    @NotNull @Transient @Max(value=23) @Min(value=0)
     private int StartHour;//instant hour of the day the generator was started
     
-    @NotNull
-    @Transient
-    @Max(value=59)
-    @Min(value=0)
+    @NotNull @Transient @Max(value=59) @Min(value=0)
     private int StartMinute;//instant minute of the hour the generator was started
 
-    @NotNull
-    @Transient
-    @Max(value=31)
-    @Min(value=0)
+    @NotNull @Transient @Max(value=31) @Min(value=0)
     private int StopDay;//instant day of the week the generator was stoped
     
-    @NotNull
-    @Transient
-    @Max(value=23)
-    @Min(value=0)
+    @NotNull @Transient @Max(value=23) @Min(value=0)
     private int StopHour;//instant hour of the day the generator was stoped
     
-    @NotNull
-    @Transient
-    @Max(value=59)
-    @Min(value=0)
+    @NotNull @Transient @Max(value=59) @Min(value=0)
     private int StopMinute;//instant minute of the hour the generator was started    
     
     /********************constructors ************************************/

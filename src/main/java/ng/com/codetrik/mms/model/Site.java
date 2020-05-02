@@ -24,27 +24,19 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.beans.factory.annotation.Value;
 
-@Entity
-@Table(name = "site",schema = "minigrid_management_system")
-@SQLDelete(sql = "update site set is_deleted=true where id=?")
-@Where(clause = "is_deleted=false")
-@Cacheable
-@Data
+@Entity @Table(name = "site",schema = "minigrid_management_system") @SQLDelete(sql = "update site set is_deleted=true where id=?")
+@Where(clause = "is_deleted=false") @Cacheable @Data
 public class Site implements Serializable{
     
     /*****************************Table Fields**********************************/
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
+    @Id @GeneratedValue(generator = "UUID") @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
     @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID id;
     
-    @UpdateTimestamp
-    @Column(name="last_updated_time")
+    @UpdateTimestamp @Column(name="last_updated_time")
     private LocalDateTime lastUpdatedTime;//automatically picked local last updated time 
     
-    @CreationTimestamp
-    @Column(name="last_created_time")
+    @CreationTimestamp @Column(name="last_created_time")
     private LocalDateTime lastCreatedTime;//automatically picked local last created time 
     
     @NotNull(message = "name property cant be null")
@@ -66,60 +58,46 @@ public class Site implements Serializable{
     @Column(name="number_of_panel")
     private int numberOfPV;//number of phot-voltaic cell used to develop the mini-grid
     
-    @Column(name="peak_watt_per_panel")
-    @NotNull
+    @Column(name="peak_watt_per_panel") @NotNull
     private int peakWattPerPV;//peak watt output per PV
     
-    @Column(name="number_of_battery_inverter")
-    @NotNull
+    @Column(name="number_of_battery_inverter") @NotNull
     private int numberOfBatteryInverter;//number of battery inverter used 
     
-    @Column(name="number_of_pv_inverter")
-    @NotNull
+    @Column(name="number_of_pv_inverter") @NotNull
     private int numberOfPVInverter;//unber of PV inverter used 
     
-    @Column(name="pv_inverter_phase_count")
-    @NotNull
+    @Column(name="pv_inverter_phase_count") @NotNull
     private int numberOfPhasePerPVInverter;//umber of phase per pV inverter
     
-    @Column(name="battery_inverter_phase_count")
-    @NotNull
+    @Column(name="battery_inverter_phase_count") @NotNull
     private int numberOfPhasePerBatteryInverter;//number of phase per battery inverter 
     
-    @Column(name="total_bank_power")
-    @NotNull
+    @Column(name="total_bank_power") @NotNull
     private int totalBankPower;//total power of the bank in watt
     
-    @Column(name="per_cluster_bank_power")
-    @NotNull
+    @Column(name="per_cluster_bank_power") @NotNull
     private int perClusterBankPower;//power of bank serving a single cluster 
     
-    @Column(name="number_of_cluster")
-    @NotNull
+    @Column(name="number_of_cluster") @NotNull
     private int numberOfCluster;//number of cluster 
     
-    @Column(name="battery_inverter_brand")
-    @NotNull
+    @Column(name="battery_inverter_brand") @NotNull
     private String BatteryInverterBrand;//brand of battery inverter
     
-    @Column(name="battery_inverter_model")
-    @NotNull
+    @Column(name="battery_inverter_model") @NotNull
     private String batteryInverterModel;//model of battery inverter 
     
-    @Column(name="pv_inverter_model")
-    @NotNull
+    @Column(name="pv_inverter_model") @NotNull
     private String pvInverterModel;//model of pv inverter 
     
-    @Column(name="pv_inverter_brand")
-    @NotNull
+    @Column(name="pv_inverter_brand") @NotNull
     private String PVInverterBrand;//brand of pv inveter
     
-    @Value("false")
-    @Column(name="is_deleted")
+    @Value("false") @Column(name="is_deleted")
     private boolean isDeleted;//flag for soft delete 
     
-    @NotNull
-    @Column(name="current_site_manager")
+    @NotNull @Column(name="current_site_manager")
     private String currentSiteManager;
     
     @OneToMany(mappedBy = "site")
@@ -134,14 +112,12 @@ public class Site implements Serializable{
     @ManyToOne
     private Operator operator;//opperator related to the site
        
-    @NotNull
-    @Column(name="site_code",unique = true)
+    @NotNull @Column(name="site_code",unique = true)
     private String siteCode;
     
     /**********************Transient  Variables********************************/
     
-    @Transient
-    @NotNull(message = "email property cant be null, required for indexing and can be supplied from cookie")
+    @Transient @NotNull(message = "email property cant be null, required for indexing and can be supplied from cookie")
     private String operatorEmail;//to be use in indexing Operator table
     
     /***********************Constructors**************************************/

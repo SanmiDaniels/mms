@@ -27,16 +27,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.beans.factory.annotation.Value;
 
-@Entity
-@SQLDelete(sql = "update vendor set is_deleted=true where id=?")
-@Where(clause = "is_deleted=false")
-@Table(name = "vendor",schema = "minigrid_management_system")
-@Data
+@Entity @SQLDelete(sql = "update vendor set is_deleted=true where id=?") @Where(clause = "is_deleted=false")
+@Table(name = "vendor",schema = "minigrid_management_system") @Data
 public class Vendor implements Serializable {
     /******************Table Fields*****************************/
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
+    @Id @GeneratedValue(generator = "UUID") @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
     @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID id;
     
@@ -46,16 +41,13 @@ public class Vendor implements Serializable {
     @NotNull
     private String address;//vendor address
     
-    @NotNull
-    @Column(name="bussiness_name")
+    @NotNull @Column(name="bussiness_name")
     private String bussinessName;//vendor CAC bussiness name
     
-    @NotNull
-    @Column(name="cac_registration_number")
+    @NotNull @Column(name="cac_registration_number")
     private String registrationNumber;//Vendor's CAC registration number 
     
-    @NotNull
-    @Column(name="phone_number")
+    @NotNull @Column(name="phone_number")
     private String phoneNumber;//vendor's phone number
     
     @Embedded
@@ -73,31 +65,23 @@ public class Vendor implements Serializable {
     @OneToMany(mappedBy = "vendor")
     private List<Revenue> revenueFromVendor;
     
-    @Column(name="is_deleted")
-    @Value("false")
+    @Column(name="is_deleted") @Value("false")
     private boolean isDeleted;//flag for soft delete    
 
-    @Email(message="does not look like an email")
-    @Column(unique = true)
-    @NotNull
+    @Email(message="does not look like an email") @Column(unique = true) @NotNull
     private String email;//vendor's email to be use in indexing the vendor table    
     
-    @UpdateTimestamp 
-    @Column(name="last_updated_time")
+    @UpdateTimestamp @Column(name="last_updated_time")
     private LocalDateTime lastUpdatedTime;//automatically picked local last updated time 
     
-    @CreationTimestamp
-    @Column(name="last_created_time")
+    @CreationTimestamp @Column(name="last_created_time")
     private LocalDateTime lastCreatedTime;//automatically picked local last created time 
     
     /****************Transient Variables*********************/
-    @Transient
-    @NotNull
+    @Transient @NotNull
     private String siteCode;//to be use in indexing site
     
-    @Transient
-    @Email
-    @NotNull
+    @Transient @Email @NotNull
     private String operatorEmail;//to be use in indexing opperator
     
     /***************************Constructors*************************/           
