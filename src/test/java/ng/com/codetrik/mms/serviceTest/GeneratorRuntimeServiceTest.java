@@ -52,7 +52,7 @@ public class GeneratorRuntimeServiceTest {
  /*
     @Test
     public void createRuntimeTest(){
-        GeneratorRuntime genRun = new GeneratorRuntime(2020, "GG56783", "MIK12890990", 5, 1, 12, 8, 1, 17, 50);
+        GeneratorRuntime genRun = new GeneratorRuntime(2020, "GG56783", "MIK12890990", 5, 2, 13, 47, 2, 15, 50,124.00,118.00);
         genRunService.createRuntime(genRun);
     }
 */

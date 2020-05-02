@@ -152,7 +152,8 @@ public class GeneratorRuntime implements Serializable {
     
     public GeneratorRuntime(){}
 
-    public GeneratorRuntime(int year, String siteCode, String generatorSerialNumber, int Month, int StartDay, int StartHour, int StartMinute, int StopDay, int StopHour, int StopMinute) {
+    public GeneratorRuntime(int year, String siteCode, String generatorSerialNumber, int Month, int StartDay, int StartHour, int StartMinute, int StopDay, int StopHour, int StopMinute,
+            Double dieselStartLevel, Double dieselStopLevel) {
         this.year = year;
         this.siteCode = siteCode;
         this.generatorSerialNumber = generatorSerialNumber;
@@ -163,6 +164,8 @@ public class GeneratorRuntime implements Serializable {
         this.StopDay = StopDay;
         this.StopHour = StopHour;
         this.StopMinute = StopMinute;
+        this.dieselStartLevel=dieselStartLevel;
+        this.dieselStopLevel=dieselStopLevel;
     }
     
     
