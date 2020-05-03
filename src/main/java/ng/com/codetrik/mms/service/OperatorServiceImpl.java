@@ -1,9 +1,7 @@
 package ng.com.codetrik.mms.service;
 
-import java.util.List;
 import java.util.UUID;
 import ng.com.codetrik.mms.model.Operator;
-import ng.com.codetrik.mms.model.Recipient;
 import ng.com.codetrik.mms.repository.OperatorRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,23 +56,28 @@ public class OperatorServiceImpl implements OperatorService{
     public Operator queryById(UUID id) {
         return operatorRepo.findById(id).get();
     }
-    //updating of an operator
+    //updating of an newOperator
     @Override
-    public Operator updateOperator(Operator operator) {
-        operator.setId(operator.getId());
-        var opp = operatorRepo.saveAndFlush(operator);
-        var recipients = opp.getRecipient(); //get recipients associated to this operator 
+    public Operator updateOperator(Operator newOperator) {
+        var existingOperator = operatorRepo.findById(newOperator.getId()).get();
+        existingOperator.setName(newOperator.getName());
+        existingOperator.setEmail(newOperator.getEmail());
+        existingOperator.setPassword(newOperator.getPassword());
+        existingOperator.setSiteCount(newOperator.getSiteCount());
+        existingOperator.setAddress(newOperator.getAddress());
+        var operator = operatorRepo.saveAndFlush(newOperator);
+        var recipients = operator.getRecipient(); //get recipients associated to this newOperator 
         try{
             var message = new SimpleMailMessage();//create simple message instance
-            var template = opp.toString();//build template message from toString            
-            if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null or empty
+            var template = operator.toString();//build template message from toString            
+            if(recipients!=null){ //check if the list of recipient is null or empty
                 var recp = new String[recipients.size()];//create empty array of size recipients
                 recipients.forEach((r) -> {
                     recp[recipients.indexOf(r)] = r.getEmail();
                 });
                 message.setTo(recp);
             }else{
-                message.setTo(opp.getEmail());//defaultly send message to the operator email insteat
+                message.setTo(operator.getEmail());//defaultly send message to the newOperator email insteat
             }
             message.setSubject("Your Company updated her operator detail: "); 
             message.setText(template);
@@ -82,7 +85,7 @@ public class OperatorServiceImpl implements OperatorService{
         }catch(MailException e){
             LOGGER.error(Marker.ANY_MARKER, e.getMessage());
         }      
-        return opp;
+        return operator;
     }
     
        

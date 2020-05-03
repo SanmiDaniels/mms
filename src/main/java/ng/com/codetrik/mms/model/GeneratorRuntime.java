@@ -133,7 +133,22 @@ public class GeneratorRuntime implements Serializable {
         this.dieselStartLevel=dieselStartLevel;
         this.dieselStopLevel=dieselStopLevel;
     }
-    
+    public GeneratorRuntime(UUID id, int year, String siteCode, String generatorSerialNumber, int Month, int StartDay, int StartHour, int StartMinute, int StopDay, int StopHour, int StopMinute,
+            Double dieselStartLevel, Double dieselStopLevel) {
+        this.year = year;
+        this.siteCode = siteCode;
+        this.generatorSerialNumber = generatorSerialNumber;
+        this.Month = Month;
+        this.StartDay = StartDay;
+        this.StartHour = StartHour;
+        this.StartMinute = StartMinute;
+        this.StopDay = StopDay;
+        this.StopHour = StopHour;
+        this.StopMinute = StopMinute;
+        this.dieselStartLevel=dieselStartLevel;
+        this.dieselStopLevel=dieselStopLevel;
+        this.id = id;
+    }    
     
     /**************************Entity life cycle methods ******************/
     @PreRemove

@@ -46,7 +46,7 @@ public class OperatorServiceTest {
     public void contextLoads() {
         LOGGER.info("-------->Application Context sucessfully loaded for OperatorServiceTest");
     }
-    /*
+/*    
     @Test
     @DirtiesContext
     public void createOperatorTest(){
@@ -76,9 +76,9 @@ public class OperatorServiceTest {
     @Test
     @DirtiesContext
     public void updateOperatorTest(){
-        Operator opp = operatorService.queryByEmail("hamzat.adewale@rubitecsolar.net");//assumed this Operator istance was returned from the frontend
-        opp.setSiteCount(1);//assumed it got returned with sitcoutn uodated 
-        Assert.isInstanceOf(Operator.class, operatorService.updateOperator(opp));
+        Operator operator = new Operator(UUID.fromString("c03449f2-b641-49b7-903e-2374b2a1ea88"),"Rubitec Nigeria Limited", "hamzat.adewale@rubitecsolar.net", "rubitectsolar2020", 1, "5 Talabi Street, Ikeja Lagos");
+        operatorService.updateOperator(operator);
+        Assert.isInstanceOf(Operator.class, operatorService.updateOperator(operator));
     }   
-    */
+*/    
 }

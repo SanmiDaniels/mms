@@ -6,8 +6,8 @@ import java.util.UUID;
 import ng.com.codetrik.mms.model.Expenditure;
 
 public interface ExpenditureService {
-     Expenditure createExpenditure(Expenditure exp);
-     Expenditure updateExpenditire(Expenditure exp);
+     Expenditure createExpenditure(Expenditure expenditure);
+     Expenditure updateExpenditire(Expenditure newExpenditure);
      Expenditure queryById(UUID id);
      List<Expenditure> queryByRequestorEmail(String requestorEmail);
 }

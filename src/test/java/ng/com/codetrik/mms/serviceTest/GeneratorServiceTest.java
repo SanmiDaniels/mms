@@ -5,6 +5,7 @@
  */
 package ng.com.codetrik.mms.serviceTest;
 
+import java.util.UUID;
 import javax.transaction.Transactional;
 import ng.com.codetrik.mms.MmsApplication;
 import ng.com.codetrik.mms.model.Generator;
@@ -52,7 +53,7 @@ public class GeneratorServiceTest {
     public void contextLoads() {
         LOGGER.info("-------->Application Context sucessfully loaded for GeneratorServiceTest");
     }
-    /*
+   
     @Test
     public void createGenerator(){
         Generator gen = new Generator("Honda", "85KVA", "HON1789856","GG56783","hamzat.adewale@rubitecsolar.net");
@@ -62,9 +63,8 @@ public class GeneratorServiceTest {
     @Test
     @Transactional
     public void updateGenerator(){
-        Generator gen = genService.queryBySerialNumber("HON1789856");
-        gen.setCapacity("50KVW");
-        Generator g = genService.updateGenerator(gen);
+        Generator generator = new Generator(UUID.fromString("8d448245-8d42-4a9a-bc07-ac6166566ad6"),"Honda", "50KVA", "HON1789856","GG56783","hamzat.adewale@rubitecsolar.net");
+        Generator g = genService.updateGenerator(generator);
         Assert.isInstanceOf(Generator.class, g);
     }
     @Test
@@ -73,5 +73,5 @@ public class GeneratorServiceTest {
         LOGGER.info("-------> Generator {}",gen.toString());
         Assert.isInstanceOf(Generator.class, gen);
     }
-    */
+    
 }

@@ -76,7 +76,14 @@ public class Generator implements Serializable {
         this.siteCode=siteCode;
         this.operatorEmail=operatorEmail;
     }
-    
+    public Generator(UUID id,String name, String capacity, String serialNumber, String siteCode, String operatorEmail) {
+        this.name = name;
+        this.capacity = capacity;
+        this.serialNumber = serialNumber;
+        this.siteCode=siteCode;
+        this.operatorEmail=operatorEmail;
+        this.id = id;
+    }    
     /*****************************Entity life cycles methods **************************/
     
     @PreRemove

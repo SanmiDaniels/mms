@@ -1,5 +1,8 @@
 package ng.com.codetrik.mms.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import ng.com.codetrik.mms.model.Generator;
 import ng.com.codetrik.mms.repository.GeneratorRepository;
@@ -63,22 +66,28 @@ public class GeneratorServiceImpl implements GeneratorService{
     }
 
     @Override
-    public Generator updateGenerator(Generator gen) {
-        gen.setId(gen.getId());
-        var g = genRepo.saveAndFlush(gen);//update the generator
-        var opp = operatorRepo.findByEmail(g.getOperatorEmail());//get Operator associated to the updated generator
-        var recipients = opp.getRecipient(); //get recipients associated to this operator       
+    public Generator updateGenerator(Generator newGenerator) {
+        var existingGenerator = genRepo.getOne(newGenerator.getId());
+        existingGenerator.setSiteCode(newGenerator.getSiteCode());//reset sitecode for existing generator
+        existingGenerator.setOperatorEmail(newGenerator.getOperatorEmail());//reset operator email for existing generator
+        existingGenerator.setName(newGenerator.getName());//reset name for for existing generator
+        existingGenerator.setSite(siteRepo.findBySiteCode(newGenerator.getSiteCode()));//reset associated site for for existing generator
+        existingGenerator.setCapacity(newGenerator.getCapacity());//reset generator capaciy for existing generator
+        existingGenerator.setOperator(operatorRepo.findByEmail(newGenerator.getOperatorEmail()));//reset associated operator for existing generator
+        existingGenerator.setSerialNumber(newGenerator.getSerialNumber());//reset serial number for existing generator
+        var generator = genRepo.saveAndFlush(existingGenerator);//update the generator
+        var recipients = operatorRepo.findByEmail(generator.getOperatorEmail()).getRecipient(); //get recipients associated to this operator       
         try{
             var message = new SimpleMailMessage();//create simple message instance
-            var template = g.toString();//build template message from toString      
-            if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
+            var template = generator.toString();//build template message from toString      
+            if(recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
                 var recp = new String[recipients.size()];//create empty array of recipients
                 recipients.forEach((r) -> {
                     recp[recipients.indexOf(r)] = r.getEmail();
                 });
                 message.setTo(recp);
             }else{
-                message.setTo(gen.getOperatorEmail());//defaultly send message to the operator email insteat
+                message.setTo(newGenerator.getOperatorEmail());//defaultly send message to the operator email insteat
             }
             message.setSubject("Your Company updated generator with the following details: "); 
             message.setText(template);
@@ -86,7 +95,7 @@ public class GeneratorServiceImpl implements GeneratorService{
         }catch(MailException e){
             LOGGER.error(Marker.ANY_MARKER, e.getMessage());
         } 
-        return g;
+        return generator;
     }
 
     @Override
@@ -104,5 +113,18 @@ public class GeneratorServiceImpl implements GeneratorService{
         gen.setSiteCode(gen.getSite().getSiteCode());
         return gen;
     }
+    @Override
+    public Map<String, String> nameAndSerialOfGeneratorOnSite(String siteCode) {
+        Map<String,String> generatorWithSerialNumber = new HashMap<>();
+       var generatorList  = siteRepo.findBySiteCode(siteCode).getGenerator();
+       generatorList.forEach((generator)->{
+           generatorWithSerialNumber.put(generator.getName(), generator.getSerialNumber());
+       });
+       return generatorWithSerialNumber;
+    } 
     
+    @Override
+    public List<Generator> generatorsOnSite(String siteCode) {
+        return siteRepo.findBySiteCode(siteCode).getGenerator();
+    }    
 }

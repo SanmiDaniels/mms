@@ -7,5 +7,5 @@ public interface OperatorService {
     Operator createOperator(Operator operator);
     Operator queryByEmail(String email);
     Operator queryById(UUID id);
-    Operator updateOperator(Operator operator);
+    Operator updateOperator(Operator operator); 
 }

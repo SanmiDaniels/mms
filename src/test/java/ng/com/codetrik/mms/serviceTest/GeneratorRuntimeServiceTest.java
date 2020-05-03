@@ -5,6 +5,7 @@
  */
 package ng.com.codetrik.mms.serviceTest;
 
+import java.util.UUID;
 import ng.com.codetrik.mms.MmsApplication;
 import ng.com.codetrik.mms.model.GeneratorRuntime;
 import ng.com.codetrik.mms.service.GeneratorRuntimeService;
@@ -49,11 +50,16 @@ public class GeneratorRuntimeServiceTest {
     public void contextLoads() {
         LOGGER.info("-------->Application Context sucessfully loaded for GeneratorRuntimeServiceTest");
     }
- /*
+/*
     @Test
     public void createRuntimeTest(){
         GeneratorRuntime genRun = new GeneratorRuntime(2020, "GG56783", "MIK12890990", 5, 2, 13, 47, 2, 15, 50,124.00,118.00);
         genRunService.createRuntime(genRun);
+    }
+    @Test
+    public void updateRuntimeTest(){
+        GeneratorRuntime genRun = new GeneratorRuntime(UUID.fromString("26f5a1c2-f61a-4d8d-968a-ba3dd9fe1a7a"),2021, "GG56783", "HON1789856", 5, 2, 13, 47, 2, 15, 50,200.00,180.00);
+        genRunService.updateRuntime(genRun);
     }
 */
 }
