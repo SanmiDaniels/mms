@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import ng.com.codetrik.mms.model.Generator;
 import ng.com.codetrik.mms.repository.GeneratorRepository;
 import ng.com.codetrik.mms.repository.OperatorRepository;
@@ -35,6 +37,9 @@ public class GeneratorServiceImpl implements GeneratorService{
     @Autowired
     JavaMailSender emailSender;
     
+    @PersistenceContext
+    EntityManager em;
+    
     private final Logger LOGGER = LoggerFactory.getLogger(GeneratorServiceImpl.class);
      
     @Override
@@ -64,7 +69,7 @@ public class GeneratorServiceImpl implements GeneratorService{
         }         
         return g;
     }
-
+    
     @Override
     public Generator updateGenerator(Generator newGenerator) {
         var existingGenerator = genRepo.getOne(newGenerator.getId());
@@ -97,7 +102,7 @@ public class GeneratorServiceImpl implements GeneratorService{
         } 
         return generator;
     }
-
+    
     @Override
     public Generator queryBySerialNumber(String serialNumber) {
         var gen = genRepo.findBySerialNumber(serialNumber);
@@ -126,5 +131,6 @@ public class GeneratorServiceImpl implements GeneratorService{
     @Override
     public List<Generator> generatorsOnSite(String siteCode) {
         return siteRepo.findBySiteCode(siteCode).getGenerator();
-    }    
+    } 
+
 }

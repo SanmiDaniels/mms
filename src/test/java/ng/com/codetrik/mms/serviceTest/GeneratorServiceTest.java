@@ -53,7 +53,7 @@ public class GeneratorServiceTest {
     public void contextLoads() {
         LOGGER.info("-------->Application Context sucessfully loaded for GeneratorServiceTest");
     }
-   
+/*   
     @Test
     public void createGenerator(){
         Generator gen = new Generator("Honda", "85KVA", "HON1789856","GG56783","hamzat.adewale@rubitecsolar.net");
@@ -61,9 +61,8 @@ public class GeneratorServiceTest {
         Assert.isInstanceOf(Generator.class, g);
     }
     @Test
-    @Transactional
     public void updateGenerator(){
-        Generator generator = new Generator(UUID.fromString("8d448245-8d42-4a9a-bc07-ac6166566ad6"),"Honda", "50KVA", "HON1789856","GG56783","hamzat.adewale@rubitecsolar.net");
+        Generator generator = new Generator(UUID.fromString("8d448245-8d42-4a9a-bc07-ac6166566ad6"),"Honda generator", "95KVA", "HON1789856","GG56783","hamzat.adewale@rubitecsolar.net");
         Generator g = genService.updateGenerator(generator);
         Assert.isInstanceOf(Generator.class, g);
     }
@@ -73,5 +72,5 @@ public class GeneratorServiceTest {
         LOGGER.info("-------> Generator {}",gen.toString());
         Assert.isInstanceOf(Generator.class, gen);
     }
-    
+*/    
 }

@@ -114,6 +114,7 @@ public class GeneratorRuntimeServiceImpl implements GeneratorRuntimeService{
         existingGeneratorRuntime.setGeneratorSerialNumber(newGeneratorRuntime.getGeneratorSerialNumber()); //reset generator serial number for existingGeneratorRuntime
         existingGeneratorRuntime.setStartDay(newGeneratorRuntime.getStartDay());//reset start day for existingGeneratorRuntime
         existingGeneratorRuntime.setMonth(newGeneratorRuntime.getMonth());//reset month for existingGeneratorRuntime
+        existingGeneratorRuntime.setYear(newGeneratorRuntime.getYear());
         //reset start time of existing GeneratorRuntime
         existingGeneratorRuntime.setStartTime(LocalDateTime.of(newGeneratorRuntime.getYear(), newGeneratorRuntime.getMonth(),
                 newGeneratorRuntime.getStartDay(),newGeneratorRuntime.getStartHour(), 

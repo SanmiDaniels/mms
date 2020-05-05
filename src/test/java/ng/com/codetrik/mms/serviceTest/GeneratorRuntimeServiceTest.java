@@ -58,7 +58,7 @@ public class GeneratorRuntimeServiceTest {
     }
     @Test
     public void updateRuntimeTest(){
-        GeneratorRuntime genRun = new GeneratorRuntime(UUID.fromString("26f5a1c2-f61a-4d8d-968a-ba3dd9fe1a7a"),2021, "GG56783", "HON1789856", 5, 2, 13, 47, 2, 15, 50,200.00,180.00);
+        GeneratorRuntime genRun = new GeneratorRuntime(UUID.fromString("26f5a1c2-f61a-4d8d-968a-ba3dd9fe1a7a"),2023, "GG56783", "HON1789856", 5, 2, 13, 47, 2, 15, 50,222.00,190.00);
         genRunService.updateRuntime(genRun);
     }
 */
