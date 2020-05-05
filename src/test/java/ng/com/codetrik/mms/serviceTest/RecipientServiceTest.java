@@ -63,7 +63,12 @@ public class RecipientServiceTest {
     
     @Test
     public void updateRecipientTest(){
-        Recipient recipient = new Recipient(UUID.fromString("42aa54c4-2a09-461f-8e30-15b5b6e8432b"),"Hamzat Habibllahi Adewale", "hamzat.adewale@rubitecsolar.net", "GG Manager", "habibllahi3@gmail.com");
+        Recipient recipient = new Recipient(UUID.fromString("20c3ef53-ccae-4069-bc18-665ec3dc809e"),"Hamzat Habibllahi", "hamzat.adewale@rubitecsolar.net", "GG Manager", "habibllahi3@gmail.com");
         Assert.isInstanceOf(Recipient.class, recipientService.updateRecipient(recipient));
+    }
+    
+    @Test
+    public void queryByEmailTest(){
+        Assert.isInstanceOf(Recipient.class, recipientService.queryByEmail("hamzat.adewale@rubitecsolar.net"));
     }
 }

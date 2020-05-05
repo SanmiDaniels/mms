@@ -8,4 +8,5 @@ public interface RecipientService {
     Recipient createRecipient(Recipient recipient);
     Recipient updateRecipient(Recipient recipient);
     Recipient queryById(UUID id);
+    Recipient queryByEmail(String email);
 }

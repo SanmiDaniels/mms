@@ -7,5 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RecipientRepository extends JpaRepository<Recipient,UUID>{
+
+    Recipient findByEmail(String email);
     
 }

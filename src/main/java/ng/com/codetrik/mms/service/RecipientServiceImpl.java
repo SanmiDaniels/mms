@@ -58,7 +58,7 @@ public class RecipientServiceImpl implements RecipientService{
             var message = new SimpleMailMessage();
             var template = recipient.toString();
             message.setTo(recipient.getOperatorEmail());
-            message.setSubject("Your Company added a new recipeint with the following details: "); 
+            message.setSubject("Your Company updated a recipeint with the following details: "); 
             message.setText(template);
             emailSender.send(message);
         }catch(MailException e){
@@ -70,6 +70,13 @@ public class RecipientServiceImpl implements RecipientService{
     @Override
     public Recipient queryById(UUID id) {
         var recipient = recipientRepo.findById(id).get();
+        recipient.setOperatorEmail(recipient.getOperator().getEmail());
+        return recipient;
+    }
+
+    @Override
+    public Recipient queryByEmail(String email) {
+        var recipient = recipientRepo.findByEmail(email);
         recipient.setOperatorEmail(recipient.getOperator().getEmail());
         return recipient;
     }
