@@ -58,7 +58,13 @@ public class Recipient implements Serializable {
         this.role = role;
         this.operatorEmail = operatorEmail;
     }
-    
+    public Recipient(UUID id, String name, String email, String role, String operatorEmail) {
+        this.name = name;
+        this.email = email;
+        this.role = role;
+        this.operatorEmail = operatorEmail;
+        this.id = id;
+    }    
     /*****************************Entity life cycles methods **************************/
     
     @PreRemove

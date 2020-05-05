@@ -29,44 +29,49 @@ public class RecipientServiceImpl implements RecipientService{
     private final Logger LOGGER = LoggerFactory.getLogger(RecipientServiceImpl.class);
     
     @Override
-    public Recipient createRecipient(Recipient recipient) {//do not send to list of recipient
-        recipient.setOperator(operatorRepo.findByEmail(recipient.getOperatorEmail()));
-        var re = recipientRepo.saveAndFlush(recipient);
+    public Recipient createRecipient(Recipient newRecipient) {//do not send to list of newRecipient
+        newRecipient.setOperator(operatorRepo.findByEmail(newRecipient.getOperatorEmail()));
+        var recipient = recipientRepo.saveAndFlush(newRecipient);
         try{
             var message = new SimpleMailMessage();
-            var template = re.toString();
-            message.setTo(re.getOperatorEmail());
+            var template = recipient.toString();
+            message.setTo(recipient.getOperatorEmail());
             message.setSubject("Your Company added a new recipient with the following details: "); 
             message.setText(template);
             emailSender.send(message);
         }catch(MailException e){
             LOGGER.error(Marker.ANY_MARKER, e.getMessage());
         } 
-        return re;
+        return recipient;
     }
 
     @Override
-    public Recipient updateRecipient(Recipient recipient) {//do not send to list of recipient
-        recipient.setId(recipient.getId());
-        var re = recipientRepo.saveAndFlush(recipient);
+    public Recipient updateRecipient(Recipient newRecipient) {//do not send to list of newRecipient
+        var existingRecipient = recipientRepo.findById(newRecipient.getId()).get();
+        existingRecipient.setOperatorEmail(newRecipient.getOperatorEmail());//reset the operatorEmail of the existingRecipient
+        existingRecipient.setName(newRecipient.getName());//reset the operatorEmail of the existingRecipient
+        existingRecipient.setEmail(newRecipient.getEmail());//reset the email of the existingRecipient
+        existingRecipient.setRole(newRecipient.getRole());//resett the role of the exixtingRecipient
+        existingRecipient.setOperator(operatorRepo.findByEmail(newRecipient.getOperatorEmail()));
+        var recipient = recipientRepo.saveAndFlush(existingRecipient);
         try{
             var message = new SimpleMailMessage();
-            var template = re.toString();
-            message.setTo(re.getOperatorEmail());
+            var template = recipient.toString();
+            message.setTo(recipient.getOperatorEmail());
             message.setSubject("Your Company added a new recipeint with the following details: "); 
             message.setText(template);
             emailSender.send(message);
         }catch(MailException e){
             LOGGER.error(Marker.ANY_MARKER, e.getMessage());
         }
-        return re;        
+        return recipient;        
     }
 
     @Override
     public Recipient queryById(UUID id) {
-        var re = recipientRepo.findById(id).get();
-        re.setOperatorEmail(re.getOperator().getEmail());
-        return re;
+        var recipient = recipientRepo.findById(id).get();
+        recipient.setOperatorEmail(recipient.getOperator().getEmail());
+        return recipient;
     }
     
 

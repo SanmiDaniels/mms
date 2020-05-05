@@ -76,9 +76,9 @@ public class OperatorServiceTest {
     @Test
     @DirtiesContext
     public void updateOperatorTest(){
-        Operator operator = new Operator(UUID.fromString("c03449f2-b641-49b7-903e-2374b2a1ea88"),"Rubitec Nigeria Limited", "hamzat.adewale@rubitecsolar.net", "rubitectsolar2020", 1, "5 Talabi Street, Ikeja Lagos");
+        Operator operator = new Operator(UUID.fromString("c03449f2-b641-49b7-903e-2374b2a1ea88"),"Rubitec Nigeria Limited", "hamzat.adewale@rubitecsolar.net", "rubitectsolar2023", 1, "5 Talabi Street, Ikeja Lagos");
         operatorService.updateOperator(operator);
         Assert.isInstanceOf(Operator.class, operatorService.updateOperator(operator));
-    }   
+    }  
 */    
 }

@@ -5,6 +5,7 @@
  */
 package ng.com.codetrik.mms.serviceTest;
 
+import java.util.UUID;
 import ng.com.codetrik.mms.MmsApplication;
 import ng.com.codetrik.mms.model.Recipient;
 import ng.com.codetrik.mms.service.RecipientService;
@@ -52,12 +53,17 @@ public class RecipientServiceTest {
     public void contextLoads() {
         LOGGER.info("-------->Application Context sucessfully loaded for RecipientServiceTest");
     }
-    /*
+
     @Test
     @DirtiesContext
     public void createRecipientTest(){
         Recipient recipient = new Recipient("Isaik Tijani", "hamzat.adewale@rubitecsolar.net", "GG Manager", "habibllahi3@gmail.com");
         Assert.isInstanceOf(Recipient.class, recipientService.createRecipient(recipient));
     }
-    */
+    
+    @Test
+    public void updateRecipientTest(){
+        Recipient recipient = new Recipient(UUID.fromString("42aa54c4-2a09-461f-8e30-15b5b6e8432b"),"Hamzat Habibllahi Adewale", "hamzat.adewale@rubitecsolar.net", "GG Manager", "habibllahi3@gmail.com");
+        Assert.isInstanceOf(Recipient.class, recipientService.updateRecipient(recipient));
+    }
 }
