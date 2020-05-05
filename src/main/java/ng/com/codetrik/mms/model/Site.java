@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -117,7 +118,7 @@ public class Site implements Serializable{
     
     /**********************Transient  Variables********************************/
     
-    @Transient @NotNull(message = "email property cant be null, required for indexing and can be supplied from cookie")
+    @Transient @Email(message = "email property cant be null, required for indexing and can be supplied from cookie") @NotNull
     private String operatorEmail;//to be use in indexing Operator table
     
     /***********************Constructors**************************************/
@@ -149,7 +150,33 @@ public class Site implements Serializable{
         this.operatorEmail = operatorEmail;
         this.siteCode=siteCode;
     }
-    
+    public Site(UUID id, String name, String capacity, String province, String lga, String settlement, int numberOfPV, int peakWattPerPV, 
+            int numberOfBatteryInverter, int numberOfPVInverter, int numberOfPhasePerPVInverter, int numberOfPhasePerBatteryInverter, 
+            int totalBankPower, int perClusterBankPower, int numberOfCluster, String BatteryInverterBrand, String batteryInverterModel, 
+            String pvInverterModel, String PVInverterBrand, String currentSiteManager, String operatorEmail, String siteCode) {
+        this.name = name;
+        this.capacity = capacity;
+        this.province = province;
+        this.lga = lga;
+        this.settlement = settlement;
+        this.numberOfPV = numberOfPV;
+        this.peakWattPerPV = peakWattPerPV;
+        this.numberOfBatteryInverter = numberOfBatteryInverter;
+        this.numberOfPVInverter = numberOfPVInverter;
+        this.numberOfPhasePerPVInverter = numberOfPhasePerPVInverter;
+        this.numberOfPhasePerBatteryInverter = numberOfPhasePerBatteryInverter;
+        this.totalBankPower = totalBankPower;
+        this.perClusterBankPower = perClusterBankPower;
+        this.numberOfCluster = numberOfCluster;
+        this.BatteryInverterBrand = BatteryInverterBrand;
+        this.batteryInverterModel = batteryInverterModel;
+        this.pvInverterModel = pvInverterModel;
+        this.PVInverterBrand = PVInverterBrand;
+        this.currentSiteManager = currentSiteManager;
+        this.operatorEmail = operatorEmail;
+        this.siteCode=siteCode;
+        this.id = id;
+    }    
 
     /**************************Entity Life Cycle methods**************************/
     @PreRemove

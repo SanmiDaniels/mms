@@ -79,14 +79,36 @@ JavaMailSender emailSender;
     }
 
     @Override
-    public Site updateSite(Site site) {
-        site.setId(site.getId());
-        var s =  siteRepo.saveAndFlush(site);//Site gotten back from the frontend get update to the DB
-        var opp = operatorRepo.findByEmail(site.getOperatorEmail());
-        var recipients = opp.getRecipient(); //get list of recipients associated to the Operator        
+    public Site updateSite(Site newSite) {
+        var existingSite = siteRepo.findBySiteCode(newSite.getSiteCode());
+        var operator = operatorRepo.findByEmail(newSite.getOperatorEmail());
+        existingSite.setOperatorEmail(newSite.getOperatorEmail());
+        existingSite.setName(newSite.getName());
+        existingSite.setCapacity(newSite.getCapacity());
+        existingSite.setProvince(newSite.getProvince());
+        existingSite.setLga(newSite.getLga());
+        existingSite.setSettlement(newSite.getSettlement());
+        existingSite.setNumberOfPV(newSite.getNumberOfPV());
+        existingSite.setPeakWattPerPV(newSite.getPeakWattPerPV());
+        existingSite.setNumberOfBatteryInverter(newSite.getNumberOfBatteryInverter());
+        existingSite.setNumberOfPVInverter(newSite.getNumberOfPVInverter());
+        existingSite.setNumberOfPhasePerPVInverter(newSite.getNumberOfPhasePerPVInverter());
+        existingSite.setNumberOfPhasePerBatteryInverter(newSite.getNumberOfPhasePerBatteryInverter());
+        existingSite.setTotalBankPower(newSite.getTotalBankPower());
+        existingSite.setPerClusterBankPower(newSite.getPerClusterBankPower());
+        existingSite.setNumberOfCluster(newSite.getNumberOfCluster());
+        existingSite.setBatteryInverterBrand(newSite.getBatteryInverterBrand());
+        existingSite.setBatteryInverterModel(newSite.getBatteryInverterModel());
+        existingSite.setPVInverterBrand(newSite.getPVInverterBrand());
+        existingSite.setPvInverterModel(newSite.getPvInverterModel());
+        existingSite.setCurrentSiteManager(newSite.getCurrentSiteManager());
+        existingSite.setSiteCode(newSite.getSiteCode());
+        existingSite.setOperator(operator);
+        var site = siteRepo.saveAndFlush(existingSite);
+        var recipients = operator.getRecipient(); //get list of recipients associated to the Operator        
         try{
             var message = new SimpleMailMessage();//create simple message instance
-            var template = s.toString();//build template message from toString
+            var template = site.toString();//build template message from toString
             if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
                 var recp = new String[recipients.size()];//create empty array of recipients
                 recipients.forEach((r) -> {
@@ -94,7 +116,7 @@ JavaMailSender emailSender;
                 });
                 message.setTo(recp);
             }else{
-                message.setTo(site.getOperatorEmail());//default send message to the email associated to the operator
+                message.setTo(newSite.getOperatorEmail());//default send message to the email associated to the operator
             }  
             message.setSubject("Your Company updated a site with the following details: "); 
             message.setText(template);
@@ -102,7 +124,7 @@ JavaMailSender emailSender;
         }catch(MailException e){
             LOGGER.error(Marker.ANY_MARKER, e.getMessage());
         } 
-        return s;
+        return site;
     }
 
     @Override
