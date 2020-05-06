@@ -53,7 +53,6 @@ public class VendorServiceTest {
     public void contextLoads() {
         LOGGER.info("-------->Application Context sucessfully loaded for SiteServiceTest");
     }
-/*    
     @Test
     @DirtiesContext
     public void createVendorTest(){
@@ -79,5 +78,5 @@ public class VendorServiceTest {
                 "obasa@gmail.com", "GG56782", "hamzat.adewale@rubitecsolar.net",false); 
         Assert.isInstanceOf(Vendor.class, vendorService.updateVendor(vendor));
     }
-*/
+   
 }
