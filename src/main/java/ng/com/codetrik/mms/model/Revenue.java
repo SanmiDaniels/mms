@@ -16,6 +16,7 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PreRemove;
@@ -27,9 +28,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,21 +37,19 @@ import org.springframework.beans.factory.annotation.Value;
 @Table(name = "revenue",schema = "minigrid_management_system") @Data
 public class Revenue implements Serializable {
     /***************Table Fields**********************/
-    @Id @GeneratedValue(generator = "UUID") @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator") 
-    @Type(type = "org.hibernate.type.UUIDCharType")
-    private UUID id;
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     
     @Column(name = "extected_amount") @NotNull
-    private Double expectedAmount;//amount expected to be deposited by the vendor
+    private Double expectedAmount;//amount expected to be deposited by the vendor (basic + last rollover)
     
     @Column(name = "deposited_amount") @Value("0")
-    private Double depositedAmount;////ammount deposited by the vendor
+    private Double depositedAmount;//ammount deposited by the vendor
     
+    private Double basic;//basic amount to be deposited 
+      
+    private Double rollover;//(depositedAmount - basic)
     
-    private Double rollover;//the amount of money yet to be deposited by the vendor, will be automatically calculated at the Servive-tier
-    
-    private boolean credibility;//flag to indicate if the vendor rollover as been cleared, this flag will be automatically raised at service tier;
- 
     @Column(name="expectation_time")
     private LocalDateTime expectationTime;//value to be derived at service-tier
     
@@ -96,6 +93,8 @@ public class Revenue implements Serializable {
     
     @NotNull @Transient @Max(value=59) @Min(value=0)
     private int deliveryMinute;//instant minute of the hour the payment was made to settle the expectation
+    
+    /***************************Transient Variable******************************************/
     
     @Transient @NotNull @Email(message="value supplied for vendorEmail does not look like an email")
     private String vendorEmail;// to be use in indexing vendor

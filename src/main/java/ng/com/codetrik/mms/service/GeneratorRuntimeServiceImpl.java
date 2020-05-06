@@ -67,7 +67,7 @@ public class GeneratorRuntimeServiceImpl implements GeneratorRuntimeService{
                     generator.getSerialNumber() + 
                     ", \nSite = " +  generator.getSite().getName();//build template message from toString
             
-            if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
+            if(recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
                 var recp = new String[recipients.size()];//create empty array of recipients
                 recipients.forEach((r) -> {
                     recp[recipients.indexOf(r)] = r.getEmail();
@@ -141,7 +141,7 @@ public class GeneratorRuntimeServiceImpl implements GeneratorRuntimeService{
             var template = generatorRuntime.toString() + ", \nGenerator Name = " +  generator.getName() + ", \nGenerator Serial = " +  generator.getSerialNumber() + 
                     ", \nSite = " +  generator.getSite().getName();//build template message from toString
             
-            if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
+            if(recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
                 var recp = new String[recipients.size()];//create empty array of recipients
                 recipients.forEach((r) -> {
                     recp[recipients.indexOf(r)] = r.getEmail();

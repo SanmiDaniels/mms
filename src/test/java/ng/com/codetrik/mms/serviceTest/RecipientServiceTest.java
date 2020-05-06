@@ -53,7 +53,7 @@ public class RecipientServiceTest {
     public void contextLoads() {
         LOGGER.info("-------->Application Context sucessfully loaded for RecipientServiceTest");
     }
-
+/*
     @Test
     @DirtiesContext
     public void createRecipientTest(){
@@ -71,4 +71,5 @@ public class RecipientServiceTest {
     public void queryByEmailTest(){
         Assert.isInstanceOf(Recipient.class, recipientService.queryByEmail("hamzat.adewale@rubitecsolar.net"));
     }
+*/
 }

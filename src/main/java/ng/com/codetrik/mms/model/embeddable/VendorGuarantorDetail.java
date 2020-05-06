@@ -3,8 +3,14 @@ package ng.com.codetrik.mms.model.embeddable;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class VendorGuarantorDetail implements Serializable {
     @Column(name="guarantor_name")
     private String guarantorName;
@@ -14,30 +20,4 @@ public class VendorGuarantorDetail implements Serializable {
     
     @Column(name="guarantor_phone_number")
     private String guarantorPhoneNumber;
-    
-    public VendorGuarantorDetail(){}
-
-    public String getGuarantorName() {
-        return guarantorName;
-    }
-
-    public void setGuarantorName(String guarantorName) {
-        this.guarantorName = guarantorName;
-    }
-
-    public String getGuarantorAddress() {
-        return guarantorAddress;
-    }
-
-    public void setGuarantorAddress(String guarantorAddress) {
-        this.guarantorAddress = guarantorAddress;
-    }
-
-    public String getGuarantorPhoneNumber() {
-        return guarantorPhoneNumber;
-    }
-
-    public void setGuarantorPhoneNumber(String guarantorPhoneNumber) {
-        this.guarantorPhoneNumber = guarantorPhoneNumber;
-    }
 }

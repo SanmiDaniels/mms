@@ -35,22 +35,22 @@ JavaMailSender emailSender;
  private final Logger LOGGER = LoggerFactory.getLogger(SiteServiceImpl.class);
 
     @Override
-    public Site createSite(Site site) {
-        var opp = operatorRepo.findByEmail(site.getOperatorEmail());//first obtain the operator to be mapped to this site
-        site.setOperator(opp);//set operator associated to this site
-        var s =  siteRepo.saveAndFlush(site);
-        var recipients = opp.getRecipient(); //get list of recipients associated to the Operator        
+    public Site createSite(Site newSite) {
+        var operator = operatorRepo.findByEmail(newSite.getOperatorEmail());//first obtain the operator to be mapped to this newSite
+        newSite.setOperator(operator);//set operator associated to this newSite
+        var site =  siteRepo.saveAndFlush(newSite);
+        var recipients = operator.getRecipient(); //get list of recipients associated to the Operator        
         try{
             var message = new SimpleMailMessage();//create simple message instance
-            var template = s.toString();//build template message from toString
-            if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
+            var template = site.toString();//build template message from toString
+            if(recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
                 var recp = new String[recipients.size()];//create empty array of recipients
                 recipients.forEach((r) -> {
                     recp[recipients.indexOf(r)] = r.getEmail();
                 });
                 message.setTo(recp);
             }else{
-                message.setTo(site.getOperatorEmail());//default send message to the email associated to the operator
+                message.setTo(newSite.getOperatorEmail());//default send message to the email associated to the operator
             }  
             message.setSubject("Your Company added a new site with the following details: "); 
             message.setText(template);
@@ -58,7 +58,7 @@ JavaMailSender emailSender;
         }catch(MailException e){
             LOGGER.error(Marker.ANY_MARKER, e.getMessage());
         }         
-        return s;
+        return site;
         
     }
 
@@ -109,7 +109,7 @@ JavaMailSender emailSender;
         try{
             var message = new SimpleMailMessage();//create simple message instance
             var template = site.toString();//build template message from toString
-            if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
+            if(recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
                 var recp = new String[recipients.size()];//create empty array of recipients
                 recipients.forEach((r) -> {
                     recp[recipients.indexOf(r)] = r.getEmail();

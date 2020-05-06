@@ -50,7 +50,7 @@ public class ExpenditureServiceImpl implements ExpenditureService{
         try{
             var message = new SimpleMailMessage();//create simple message instance
             var template = expp.toString();//build template message from toString
-            if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
+            if(recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
                 var recp = new String[recipients.size()];//create empty array of recipients
                 recipients.forEach((r) -> {
                     recp[recipients.indexOf(r)] = r.getEmail();
@@ -116,7 +116,7 @@ public class ExpenditureServiceImpl implements ExpenditureService{
                     try{
                        var message = new SimpleMailMessage();//create simple message instance
                        var template = expenditure.toString();//build template message from toString
-                       if(!recipients.isEmpty()&& recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
+                       if(recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
                             String[] recp = new String[recipients.size()];//create empty array of recipients
                             recipients.forEach((r) -> {
                                recp[recipients.indexOf(r)] = r.getEmail();

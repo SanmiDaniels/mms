@@ -18,6 +18,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.ToString;
 import ng.com.codetrik.mms.model.embeddable.VendorGuarantorDetail;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -50,31 +51,34 @@ public class Vendor implements Serializable {
     @NotNull @Column(name="phone_number")
     private String phoneNumber;//vendor's phone number
     
+    @Value("false")
+    private boolean credibility;//flag to indicate if the vendor rollover as been cleared, this flag will be automatically raised at service tier;
+     
     @Embedded
     private VendorAccountDetail accountDetail;//wrapper for storing vendor bank details
     
-    @Embedded
+    @Embedded @ToString.Exclude
     private VendorGuarantorDetail vendorGuarantorDetail;
     
-    @ManyToOne
+    @ManyToOne @ToString.Exclude
     private Site site;
     
-    @ManyToOne
+    @ManyToOne @ToString.Exclude
     private Operator operator;
     
-    @OneToMany(mappedBy = "vendor")
+    @OneToMany(mappedBy = "vendor") @ToString.Exclude
     private List<Revenue> revenueFromVendor;
     
-    @Column(name="is_deleted") @Value("false")
+    @Column(name="is_deleted") @Value("false") @ToString.Exclude
     private boolean isDeleted;//flag for soft delete    
 
     @Email(message="does not look like an email") @Column(unique = true) @NotNull
     private String email;//vendor's email to be use in indexing the vendor table    
     
-    @UpdateTimestamp @Column(name="last_updated_time")
+    @UpdateTimestamp @Column(name="last_updated_time") @ToString.Exclude
     private LocalDateTime lastUpdatedTime;//automatically picked local last updated time 
     
-    @CreationTimestamp @Column(name="last_created_time")
+    @CreationTimestamp @Column(name="last_created_time") @ToString.Exclude
     private LocalDateTime lastCreatedTime;//automatically picked local last created time 
     
     /****************Transient Variables*********************/
@@ -87,7 +91,8 @@ public class Vendor implements Serializable {
     /***************************Constructors*************************/           
     public Vendor(){}
 
-    public Vendor(String name, String address, String bussinessName, String registrationNumber, String phoneNumber, VendorAccountDetail accountDetail, VendorGuarantorDetail vendorGuarantorDetail, String email, String siteCode, String operatorEmail) {
+    public Vendor(String name, String address, String bussinessName, String registrationNumber, String phoneNumber, VendorAccountDetail accountDetail, 
+            VendorGuarantorDetail vendorGuarantorDetail, String email, String siteCode, String operatorEmail, boolean credibility) {
         this.name = name;
         this.address = address;
         this.bussinessName = bussinessName;
@@ -98,7 +103,22 @@ public class Vendor implements Serializable {
         this.email = email;
         this.siteCode = siteCode;
         this.operatorEmail = operatorEmail;
+        this.credibility = credibility;
     }
+    public Vendor(UUID id, String name, String address, String bussinessName, String registrationNumber, String phoneNumber, VendorAccountDetail accountDetail, 
+            VendorGuarantorDetail vendorGuarantorDetail, String email, String siteCode, String operatorEmail, boolean credibility) {
+        this.name = name;
+        this.address = address;
+        this.bussinessName = bussinessName;
+        this.registrationNumber = registrationNumber;
+        this.phoneNumber = phoneNumber;
+        this.accountDetail = accountDetail;
+        this.vendorGuarantorDetail = vendorGuarantorDetail;
+        this.email = email;
+        this.siteCode = siteCode;
+        this.operatorEmail = operatorEmail;
+        this.credibility = credibility;
+    }    
     
     /*********************Entity life Cycle methods***********************/
     

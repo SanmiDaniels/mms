@@ -53,7 +53,7 @@ public class SiteServiceTest {
     public void contextLoads() {
         LOGGER.info("-------->Application Context sucessfully loaded for SiteServiceTest");
     }
-
+/*
     @Test
     @DirtiesContext
     public void createSiteTest(){
@@ -91,5 +91,5 @@ public class SiteServiceTest {
         se.setLga("Ilupeju");
         LOGGER.info("-------> operator {}",se.toString());
     }
-
+*/
 }
