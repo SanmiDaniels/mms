@@ -18,8 +18,11 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(isolation = Isolation.READ_COMMITTED)
 public class ExpenditureServiceImpl implements ExpenditureService{
 
     @Autowired
