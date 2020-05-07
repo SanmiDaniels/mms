@@ -55,4 +55,8 @@ public class RevenueServiceTest {
     public void lastRevenueTest(){
         LOGGER.info("-------->Last revenue related to the vendor  email is {} ",revenueRepo.findLastRevenue("obasa@gmail.com"));
     }
+    @Test
+    public void updateRevenueTest(){
+        Assert.isInstanceOf(Revenue.class, revenueService.updateRevenue(new Revenue(17L,700000.00,600000.00,"obasa@gmail.com")));
+    }    
 }

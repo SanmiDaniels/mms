@@ -11,4 +11,7 @@ public interface RevenueRepository extends JpaRepository<Revenue,Long>{
     
     @Query(value = "select * from revenue where vendor_email = :email order by id desc limit 1", nativeQuery = true)
     Revenue findLastRevenue(@Param("email") String email);
+
+    @Query(value = "select * from revenue where vendor_email = :email order by id desc limit 1,1", nativeQuery = true)
+    Revenue findSecondLastRevenue(@Param("email") String email);    
 }
