@@ -10,7 +10,7 @@ an email will be sent to the recipient mails associated to the Operator. The ema
 along with the operator email and password if such record is to be updated.
 
 */
-package ng.com.codetrik.mms.model;
+package ng.com.codetrik.mms.model.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

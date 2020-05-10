@@ -7,7 +7,7 @@ package ng.com.codetrik.mms.serviceTest;
 
 import java.util.UUID;
 import ng.com.codetrik.mms.MmsApplication;
-import ng.com.codetrik.mms.model.Recipient;
+import ng.com.codetrik.mms.model.entity.Recipient;
 import ng.com.codetrik.mms.service.RecipientService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;

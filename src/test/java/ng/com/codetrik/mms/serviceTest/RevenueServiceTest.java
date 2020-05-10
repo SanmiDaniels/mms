@@ -1,7 +1,7 @@
 package ng.com.codetrik.mms.serviceTest;
 
 import ng.com.codetrik.mms.MmsApplication;
-import ng.com.codetrik.mms.model.Revenue;
+import ng.com.codetrik.mms.model.entity.Revenue;
 import ng.com.codetrik.mms.repository.RevenueRepository;
 import ng.com.codetrik.mms.service.RevenueService;
 import org.junit.jupiter.api.AfterEach;

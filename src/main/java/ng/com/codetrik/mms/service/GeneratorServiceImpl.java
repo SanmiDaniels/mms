@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import ng.com.codetrik.mms.model.Generator;
+import ng.com.codetrik.mms.model.entity.Generator;
 import ng.com.codetrik.mms.repository.GeneratorRepository;
 import ng.com.codetrik.mms.repository.OperatorRepository;
 import ng.com.codetrik.mms.repository.SiteRepository;

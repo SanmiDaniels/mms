@@ -1,6 +1,6 @@
 package ng.com.codetrik.mms.service;
 
-import ng.com.codetrik.mms.model.Revenue;
+import ng.com.codetrik.mms.model.entity.Revenue;
 
 public interface RevenueService {
     Revenue createRevenue(Revenue newRevenue);

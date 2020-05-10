@@ -5,7 +5,7 @@ to that operatorEmail is assigned an internal id of the expenditure record creat
 also to update an expenditure record, operatorEmail and password provided must match that of the opperator associated with the record.
 
 */
-package ng.com.codetrik.mms.model;
+package ng.com.codetrik.mms.model.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

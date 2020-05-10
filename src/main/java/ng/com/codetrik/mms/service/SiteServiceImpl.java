@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import ng.com.codetrik.mms.model.Site;
+import ng.com.codetrik.mms.model.entity.Site;
 import ng.com.codetrik.mms.repository.OperatorRepository;
 import ng.com.codetrik.mms.repository.SiteRepository;
 import org.slf4j.Logger;

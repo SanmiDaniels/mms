@@ -8,7 +8,7 @@ package ng.com.codetrik.mms.serviceTest;
 import java.util.UUID;
 import javax.transaction.Transactional;
 import ng.com.codetrik.mms.MmsApplication;
-import ng.com.codetrik.mms.model.Generator;
+import ng.com.codetrik.mms.model.entity.Generator;
 import ng.com.codetrik.mms.service.GeneratorService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;

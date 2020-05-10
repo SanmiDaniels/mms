@@ -1,6 +1,6 @@
 package ng.com.codetrik.mms.repository;
 
-import ng.com.codetrik.mms.model.Revenue;
+import ng.com.codetrik.mms.model.entity.Revenue;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

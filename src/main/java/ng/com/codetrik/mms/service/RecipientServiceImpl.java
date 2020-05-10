@@ -1,7 +1,7 @@
 package ng.com.codetrik.mms.service;
 
 import java.util.UUID;
-import ng.com.codetrik.mms.model.Recipient;
+import ng.com.codetrik.mms.model.entity.Recipient;
 import ng.com.codetrik.mms.repository.OperatorRepository;
 import ng.com.codetrik.mms.repository.RecipientRepository;
 import org.slf4j.Logger;

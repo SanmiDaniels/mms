@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.UUID;
-import ng.com.codetrik.mms.model.GeneratorRuntime;
+import ng.com.codetrik.mms.model.entity.GeneratorRuntime;
 import ng.com.codetrik.mms.model.enumeration.Months;
 import ng.com.codetrik.mms.repository.GeneratorRepository;
 import ng.com.codetrik.mms.repository.GeneratorRuntimeRepository;

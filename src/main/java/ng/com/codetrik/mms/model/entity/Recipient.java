@@ -1,5 +1,5 @@
 
-package ng.com.codetrik.mms.model;
+package ng.com.codetrik.mms.model.entity;
 
 import java.io.Serializable;
 import java.util.UUID;

@@ -1,7 +1,7 @@
 package ng.com.codetrik.mms.repository;
 
 import java.util.UUID;
-import ng.com.codetrik.mms.model.Operator;
+import ng.com.codetrik.mms.model.entity.Operator;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

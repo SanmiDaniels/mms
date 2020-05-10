@@ -38,7 +38,7 @@ public class JpaHibernateConfig {
    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
       LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
       em.setDataSource(jpaDataSource());
-      em.setPackagesToScan(new String[] { "ng.com.codetrik.mms.model" });
+      em.setPackagesToScan(new String[] { "ng.com.codetrik.mms.model.entity" });
       em.setPersistenceUnitName("punit");
       JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
       em.setJpaVendorAdapter(vendorAdapter);

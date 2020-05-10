@@ -1,4 +1,4 @@
-package ng.com.codetrik.mms.model;
+package ng.com.codetrik.mms.model.entity;
 
 import ng.com.codetrik.mms.model.embeddable.VendorAccountDetail;
 import java.io.Serializable;

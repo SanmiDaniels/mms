@@ -3,7 +3,7 @@ package ng.com.codetrik.mms.service;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import ng.com.codetrik.mms.model.Generator;
+import ng.com.codetrik.mms.model.entity.Generator;
 
 public interface GeneratorService {
     Generator createGenerator(Generator gen);
