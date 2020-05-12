@@ -3,7 +3,7 @@ package ng.com.codetrik.mms.controller;
 
 import java.util.UUID;
 import ng.com.codetrik.mms.model.util.Detail;
-import ng.com.codetrik.mms.model.util.SiteModel;
+import ng.com.codetrik.mms.model.dto.SiteDTO;
 import ng.com.codetrik.mms.service.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
@@ -24,9 +24,9 @@ public class SiteController {
     
     //entry point in to site Resources
     @GetMapping()
-    public EntityModel<SiteModel>getSiteByCode(@RequestBody Detail detail){
+    public EntityModel<SiteDTO> getSiteByCode(@RequestBody Detail detail){
         var site = siteService.queryBySiteCode(detail.getSiteCode());
-        var model = new SiteModel(site.getId(), site.getName(), site.getSiteCode(), site.getOperatorEmail(), site.getCapacity(), site.getProvince(), 
+        var model = new SiteDTO(site.getId(), site.getName(), site.getSiteCode(), site.getOperatorEmail(), site.getCapacity(), site.getProvince(), 
                 site.getLga(), site.getSettlement(), site.getNumberOfPV(), site.getPeakWattPerPV(),site.getNumberOfBatteryInverter(), 
                 site.getNumberOfPVInverter(), site.getNumberOfPhasePerPVInverter(), site.getNumberOfPhasePerBatteryInverter(), 
                 site.getTotalBankPower(), site.getPerClusterBankPower(), site.getNumberOfCluster(), site.getBatteryInverterBrand(), 
@@ -39,15 +39,15 @@ public class SiteController {
     }
 
     @GetMapping(path = "/{id}")
-    public EntityModel<SiteModel>getSiteById(@PathVariable(value="id") UUID id){
+    public EntityModel<SiteDTO> getSiteById(@PathVariable(value="id") UUID id){
         var site = siteService.queryById(id);
-        var siteModel = new SiteModel(site.getId(), site.getName(), site.getSiteCode(), site.getOperatorEmail(), site.getCapacity(), site.getProvince(), 
+        var model = new SiteDTO(site.getId(), site.getName(), site.getSiteCode(), site.getOperatorEmail(), site.getCapacity(), site.getProvince(), 
                 site.getLga(), site.getSettlement(), site.getNumberOfPV(), site.getPeakWattPerPV(),site.getNumberOfBatteryInverter(), 
                 site.getNumberOfPVInverter(), site.getNumberOfPhasePerPVInverter(), site.getNumberOfPhasePerBatteryInverter(), 
                 site.getTotalBankPower(), site.getPerClusterBankPower(), site.getNumberOfCluster(), site.getBatteryInverterBrand(), 
                 site.getBatteryInverterModel(), site.getPvInverterModel(), site.getPVInverterBrand(), site.getCurrentSiteManager());
         return new EntityModel<>(
-                siteModel,
+                model,
                 linkTo(methodOn(OperatorController.class).getOperatorById(site.getOperator().getId())).withRel("operator")
                 );
     }    

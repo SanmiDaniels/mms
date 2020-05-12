@@ -5,7 +5,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import ng.com.codetrik.mms.model.entity.Operator;
 import ng.com.codetrik.mms.model.util.Login;
-import ng.com.codetrik.mms.model.util.OperatorModel;
+import ng.com.codetrik.mms.model.dto.OperatorDTO;
 import ng.com.codetrik.mms.service.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
@@ -26,27 +26,24 @@ public class OperatorController {
     
     //entry point in to Operator resources
     @GetMapping()
-    public EntityModel<OperatorModel> getOperatorByEmail(@RequestBody Login login){
+    public EntityModel<OperatorDTO> getOperatorByEmail(@RequestBody Login login){
         var operator = operatorService.queryByEmail(login.getEmail());
-        var  model = new OperatorModel(operator.getId(), operator.getName(), operator.getEmail(), operator.getSiteCount(), operator.getAddress());
-        var links = createLinks(operator);
+        var  model = new OperatorDTO(operator.getId(), operator.getName(), operator.getEmail(), operator.getSiteCount(), operator.getAddress());
+        var links = operator.getSite().stream().map(
+                site -> linkTo(methodOn(SiteController.class).getSiteById(site.getId())).withRel("site")
+        ).collect(Collectors.toList());
         links.add(linkTo(methodOn(OperatorController.class).getOperatorById(operator.getId())).withSelfRel());
         return new EntityModel<>(model,links);
     }
     
     @GetMapping(path = "/{id}")
-    public EntityModel<OperatorModel> getOperatorById(@PathVariable(value = "id") UUID id){
+    public EntityModel<OperatorDTO> getOperatorById(@PathVariable(value = "id") UUID id){
         var operator = operatorService.queryById(id);
-        var  model = new OperatorModel(operator.getId(), operator.getName(), operator.getEmail(), operator.getSiteCount(), operator.getAddress());
-        var links = createLinks(operator);
-        links.add(linkTo(methodOn(OperatorController.class).getOperatorById(operator.getId())).withSelfRel());
-        return new EntityModel<>(model,links);
-    } 
-    
-    private List<Link> createLinks(Operator operator){
+        var  model = new OperatorDTO(operator.getId(), operator.getName(), operator.getEmail(), operator.getSiteCount(), operator.getAddress());
         var links = operator.getSite().stream().map(
                 site -> linkTo(methodOn(SiteController.class).getSiteById(site.getId())).withRel("site")
         ).collect(Collectors.toList());
-        return links;
-    }
+        links.add(linkTo(methodOn(OperatorController.class).getOperatorById(operator.getId())).withSelfRel());
+        return new EntityModel<>(model,links);
+    } 
 }
