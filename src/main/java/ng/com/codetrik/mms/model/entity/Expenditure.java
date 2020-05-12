@@ -107,7 +107,21 @@ public class Expenditure implements Serializable {
     public void preRemove(){
         this.isDeleted=true;
     }
-   
+
+    public Expenditure(Double ammount, String name, int year, String description, String requestorEmail, int month, int type, int status, 
+            String operatorEmail, String siteCode) {
+        this.ammount = ammount;
+        this.name = name;
+        this.year = year;
+        this.description = description;
+        this.requestorEmail = requestorEmail;
+        this.month = month;
+        this.type = type;
+        this.status = status;
+        this.operatorEmail = operatorEmail;
+        this.siteCode = siteCode;
+    }
+    
     /********************************Getters and Setters*******************************/
     @Override
     public String toString() {

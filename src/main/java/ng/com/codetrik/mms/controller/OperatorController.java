@@ -29,9 +29,19 @@ public class OperatorController {
     public EntityModel<OperatorDTO> getOperatorByEmail(@RequestBody Login login){
         var operator = operatorService.queryByEmail(login.getEmail());
         var  model = new OperatorDTO(operator.getId(), operator.getName(), operator.getEmail(), operator.getSiteCount(), operator.getAddress());
+        
         var links = operator.getSite().stream().map(
                 site -> linkTo(methodOn(SiteController.class).getSiteById(site.getId())).withRel("site")
         ).collect(Collectors.toList());
+        
+        links.addAll(operator.getGenerator().stream().map(
+                generator -> linkTo(methodOn(GeneratorController.class).getGeneratorById(generator.getId())).withRel("generator")
+        ).collect(Collectors.toList()));  
+        
+        links.addAll(operator.getVendor().stream().map(
+                vendor -> linkTo(methodOn(VendorController.class).getVendorById(vendor.getId())).withRel("vendor")
+        ).collect(Collectors.toList())); 
+        
         links.add(linkTo(methodOn(OperatorController.class).getOperatorById(operator.getId())).withSelfRel());
         return new EntityModel<>(model,links);
     }
@@ -40,9 +50,19 @@ public class OperatorController {
     public EntityModel<OperatorDTO> getOperatorById(@PathVariable(value = "id") UUID id){
         var operator = operatorService.queryById(id);
         var  model = new OperatorDTO(operator.getId(), operator.getName(), operator.getEmail(), operator.getSiteCount(), operator.getAddress());
+        
         var links = operator.getSite().stream().map(
                 site -> linkTo(methodOn(SiteController.class).getSiteById(site.getId())).withRel("site")
         ).collect(Collectors.toList());
+        
+        links.addAll(operator.getGenerator().stream().map(
+                generator -> linkTo(methodOn(GeneratorController.class).getGeneratorById(generator.getId())).withRel("generator")
+        ).collect(Collectors.toList()));
+        
+        links.addAll(operator.getVendor().stream().map(
+                vendor -> linkTo(methodOn(VendorController.class).getVendorById(vendor.getId())).withRel("vendor")
+        ).collect(Collectors.toList()));       
+        
         links.add(linkTo(methodOn(OperatorController.class).getOperatorById(operator.getId())).withSelfRel());
         return new EntityModel<>(model,links);
     } 

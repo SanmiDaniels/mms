@@ -13,4 +13,5 @@ import lombok.Setter;
 public class Detail {
     private String siteCode;
     private String vendorEmail;
+    private String serialNumber;//serial number associated with the generator
 }

@@ -32,10 +32,10 @@ public class VendorController {
         var model = new VendorDTO(vendor.getId(), vendor.getName(), vendor.getAddress(), vendor.getBussinessName(), vendor.getRegistrationNumber(), 
                 vendor.getPhoneNumber(), vendor.isCredibility(), vendor.getEmail(), vendor.getSiteCode(), vendor.getOperatorEmail(), 
                 vendor.getAccountDetail(), vendor.getVendorGuarantorDetail());
-        //String id = vendor.getId().toString();
-        model.add(linkTo(VendorController.class).slash(vendor.getId()).withSelfRel());//slash aproach 
+        
         model.add(linkTo(methodOn(OperatorController.class).getOperatorById(vendor.getOperator().getId())).withRel("operator"));//proxy approach
         model.add(linkTo(methodOn(SiteController.class).getSiteById(vendor.getSite().getId())).withRel("site"));
+        model.add(linkTo(VendorController.class).slash(vendor.getId()).withSelfRel());//slash aproach 
         return model;
     }
     
@@ -45,9 +45,10 @@ public class VendorController {
         var model = new VendorDTO(vendor.getId(), vendor.getName(), vendor.getAddress(), vendor.getBussinessName(), vendor.getRegistrationNumber(), 
                 vendor.getPhoneNumber(), vendor.isCredibility(), vendor.getEmail(), vendor.getSiteCode(), vendor.getOperatorEmail(), 
                 vendor.getAccountDetail(), vendor.getVendorGuarantorDetail());
-        model.add(linkTo(VendorController.class).slash(vendor.getId()).withSelfRel());
+        
         model.add(linkTo(methodOn(OperatorController.class).getOperatorById(vendor.getOperator().getId())).withRel("operator"));
-        model.add(linkTo(methodOn(SiteController.class).getSiteById(vendor.getSite().getId())).withRel("site"));        
+        model.add(linkTo(methodOn(SiteController.class).getSiteById(vendor.getSite().getId())).withRel("site")); 
+        model.add(linkTo(VendorController.class).slash(vendor.getId()).withSelfRel());
         return model;
     }    
 
