@@ -20,7 +20,7 @@ public class GeneratorController {
     GeneratorService generatorService;
     
     @GetMapping()
-    public GeneratorDTO getGeneratorBySerial(@RequestBody Detail detail){
+    public GeneratorDTO getGeneratorBySerial(@RequestBody Detail detail) {
         var generator = generatorService.queryBySerialNumber(detail.getSerialNumber());
         var model = new GeneratorDTO(generator.getId(), generator.getName(), generator.getCapacity(), generator.getSerialNumber(), generator.getOperatorEmail(), generator.getSiteCode());
         
