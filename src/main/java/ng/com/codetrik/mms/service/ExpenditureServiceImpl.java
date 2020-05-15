@@ -53,6 +53,7 @@ public class ExpenditureServiceImpl implements ExpenditureService{
         sendExpenditureEmail(operator, expenditure, "Your Company created an expenditure record with the following details: ");  
         return expenditure;     
     }
+    
     @Override
     public Expenditure queryById(UUID id) {
        var exp = expenditureRepo.findById(id).get();
