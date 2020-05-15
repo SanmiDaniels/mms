@@ -1,6 +1,7 @@
 package ng.com.codetrik.mms.service;
 
 import java.util.UUID;
+import ng.com.codetrik.mms.model.entity.Operator;
 import ng.com.codetrik.mms.model.entity.Revenue;
 import ng.com.codetrik.mms.model.entity.Vendor;
 import ng.com.codetrik.mms.repository.OperatorRepository;
@@ -46,25 +47,7 @@ public class VendorServiceImpl implements VendorService{
         newVendor.setOperator(operator);
         newVendor.setSite(site);
         var vendor = vendorRepo.save(newVendor);
-        var recipients = operator.getRecipient();
-        try{
-            var message = new SimpleMailMessage();
-            var template = vendor.toString();
-            if(recipients!=null){
-                var recp = new String[recipients.size()];
-                recipients.forEach((r)->{
-                   recp[recipients.indexOf(r)] = r.getEmail();
-                });
-                message.setTo(recp);
-            }else{
-                message.setTo(newVendor.getOperatorEmail());
-            }
-            message.setSubject("Your company registered a new vendor with the following details: ");
-            message.setText(template);
-            emailSender.send(message);
-        }catch(MailException e){
-            LOGGER.info(Marker.ANY_MARKER, e.getMessage());
-        }
+        sendVendorEmail(operator, vendor, "Your company registered a new vendor with the following details: "); 
         revenueRepo.save(new Revenue(0.00, 0.00, 0.00, 0.00, 0.00, vendor, newVendor.getEmail(), 0.00));//create reference revenue record for new vendor
         return vendor;
     }
@@ -84,26 +67,8 @@ public class VendorServiceImpl implements VendorService{
         existingVendor.setPhoneNumber(newVendor.getPhoneNumber());//reset phone number of of existing vendor 
         existingVendor.setVendorGuarantorDetail(newVendor.getVendorGuarantorDetail());//reset vendor guarantor details 
         existingVendor.setAccountDetail(newVendor.getAccountDetail());//reset vendor account details
-        var vendor = vendorRepo.saveAndFlush(existingVendor);//update the changes to the existing vendor 
-        var recipients = operator.getRecipient();
-                try{
-                    var message = new SimpleMailMessage();
-                    var template = vendor.toString();
-                    if(recipients!=null){
-                        var recp = new String[recipients.size()];
-                        recipients.forEach((r)->{
-                           recp[recipients.indexOf(r)] = r.getEmail();
-                        });
-                        message.setTo(recp);
-                    }else{
-                        message.setTo(newVendor.getOperatorEmail());
-                    }
-                    message.setSubject("Your company updated a vendor with the following details: ");
-                    message.setText(template);
-                    emailSender.send(message);
-                }catch(MailException e){
-                    LOGGER.info(Marker.ANY_MARKER, e.getMessage());
-                }        
+        var vendor = vendorRepo.saveAndFlush(existingVendor);//update the changes to the existing vendor
+        sendVendorEmail(operator, vendor, "Your company updated a vendor with the following details: ");        
         return vendor;
     }
 
@@ -123,4 +88,23 @@ public class VendorServiceImpl implements VendorService{
         return vendor;
     }
     
+    private void sendVendorEmail(Operator operator, Vendor vendor, String subject){
+        var recipients = operator.getRecipient();
+        try{
+            var message = new SimpleMailMessage();
+            var template = vendor.toString();
+            if(recipients!=null){
+                var recp = new String[recipients.size()];
+                recipients.forEach((r)->{recp[recipients.indexOf(r)] = r.getEmail();});
+                message.setTo(recp);
+            }else{
+                message.setTo(vendor.getOperatorEmail());
+            }
+            message.setSubject(subject);
+            message.setText(template);
+            emailSender.send(message);
+        }catch(MailException e){
+            LOGGER.info(Marker.ANY_MARKER, e.getMessage());
+        }        
+    }
 }

@@ -32,16 +32,7 @@ public class RecipientServiceImpl implements RecipientService{
     public Recipient createRecipient(Recipient newRecipient) {//do not send to list of newRecipient
         newRecipient.setOperator(operatorRepo.findByEmail(newRecipient.getOperatorEmail()));
         var recipient = recipientRepo.saveAndFlush(newRecipient);
-        try{
-            var message = new SimpleMailMessage();
-            var template = recipient.toString();
-            message.setTo(recipient.getOperatorEmail());
-            message.setSubject("Your Company added a new recipient with the following details: "); 
-            message.setText(template);
-            emailSender.send(message);
-        }catch(MailException e){
-            LOGGER.error(Marker.ANY_MARKER, e.getMessage());
-        } 
+        sendRecipientMail(recipient, "Your Company added a new recipient with the following details: "); 
         return recipient;
     }
 
@@ -54,16 +45,7 @@ public class RecipientServiceImpl implements RecipientService{
         existingRecipient.setRole(newRecipient.getRole());//resett the role of the exixtingRecipient
         existingRecipient.setOperator(operatorRepo.findByEmail(newRecipient.getOperatorEmail()));
         var recipient = recipientRepo.saveAndFlush(existingRecipient);
-        try{
-            var message = new SimpleMailMessage();
-            var template = recipient.toString();
-            message.setTo(recipient.getOperatorEmail());
-            message.setSubject("Your Company updated a recipeint with the following details: "); 
-            message.setText(template);
-            emailSender.send(message);
-        }catch(MailException e){
-            LOGGER.error(Marker.ANY_MARKER, e.getMessage());
-        }
+        sendRecipientMail(recipient, "Your Company updated a recipeint with the following details: ");
         return recipient;        
     }
 
@@ -81,5 +63,17 @@ public class RecipientServiceImpl implements RecipientService{
         return recipient;
     }
     
+    private void sendRecipientMail(Recipient recipient, String subject){
+        try{
+            var message = new SimpleMailMessage();
+            var template = recipient.toString();
+            message.setTo(recipient.getOperatorEmail());
+            message.setSubject(subject); 
+            message.setText(template);
+            emailSender.send(message);
+        }catch(MailException e){
+            LOGGER.error(Marker.ANY_MARKER, e.getMessage());
+        }        
+    }
 
 }

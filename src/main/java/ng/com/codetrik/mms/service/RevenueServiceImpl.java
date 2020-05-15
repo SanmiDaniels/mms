@@ -1,5 +1,6 @@
 package ng.com.codetrik.mms.service;
 
+import ng.com.codetrik.mms.model.entity.Operator;
 import ng.com.codetrik.mms.model.entity.Revenue;
 import ng.com.codetrik.mms.repository.OperatorRepository;
 import ng.com.codetrik.mms.repository.RevenueRepository;
@@ -69,26 +70,7 @@ public class RevenueServiceImpl implements RevenueService{
         var revenue = revenueRepo.saveAndFlush(newRevenue);//save to database 
         //email feature
         var operator = revenue.getVendor().getOperator();
-        var recipients =  operator.getRecipient();//get list of recipients associated to the Operator          
-        try{
-            var message = new SimpleMailMessage();//create simple message instance
-            var template = revenue.toString();
-            
-            if(recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
-                var recp = new String[recipients.size()];//create empty array of recipients
-                recipients.forEach((r) -> {
-                    recp[recipients.indexOf(r)] = r.getEmail();
-                });
-                message.setTo(recp);
-            }else{
-                message.setTo(operator.getEmail());//default send message to the email associated to the operator
-            }  
-            message.setSubject("Expected revenue today is: "); 
-            message.setText(template);
-            emailSender.send(message);
-        }catch(MailException e){
-            LOGGER.error(Marker.ANY_MARKER, e.getMessage());
-        }        
+        sendRevenueMail(operator,revenue,"Expected revenue today is: ");        
         return revenue;
     }
 
@@ -133,6 +115,16 @@ public class RevenueServiceImpl implements RevenueService{
         
         //email feature
         var operator = revenue.getVendor().getOperator();
+        sendRevenueMail(operator,revenue,"Expected Revenue updated as follows: ");         
+        return revenue;
+    }    
+    
+    @Override
+    public Revenue queryByEmail(String email){
+        return revenueRepo.findLastRevenue(email);  
+    }
+    
+    private void sendRevenueMail(Operator operator,Revenue revenue,String subject){
         var recipients =  operator.getRecipient();//get list of recipients associated to the Operator          
         try{
             var message = new SimpleMailMessage();//create simple message instance
@@ -140,25 +132,17 @@ public class RevenueServiceImpl implements RevenueService{
             
             if(recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
                 var recp = new String[recipients.size()];//create empty array of recipients
-                recipients.forEach((r) -> {
-                    recp[recipients.indexOf(r)] = r.getEmail();
-                });
+                recipients.forEach((r) -> {recp[recipients.indexOf(r)] = r.getEmail();});
                 message.setTo(recp);
             }else{
                 message.setTo(operator.getEmail());//default send message to the email associated to the operator
             }  
-            message.setSubject("Expected Revenue updated as follows: "); 
+            message.setSubject("Expected revenue today is: "); 
             message.setText(template);
             emailSender.send(message);
         }catch(MailException e){
             LOGGER.error(Marker.ANY_MARKER, e.getMessage());
-        }         
-        return revenue;
-    }    
-    
-    @Override
-    public Revenue queryByEmail(String email){
-        return revenueRepo.findLastRevenue(email);  
+        }        
     }
     
 }

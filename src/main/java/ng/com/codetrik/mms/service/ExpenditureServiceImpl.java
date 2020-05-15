@@ -4,6 +4,7 @@ package ng.com.codetrik.mms.service;
 import java.util.List;
 import java.util.UUID;
 import ng.com.codetrik.mms.model.entity.Expenditure;
+import ng.com.codetrik.mms.model.entity.Operator;
 import ng.com.codetrik.mms.model.enumeration.ExpenditureStatus;
 import ng.com.codetrik.mms.model.enumeration.ExpenditureType;
 import ng.com.codetrik.mms.model.enumeration.Months;
@@ -40,37 +41,17 @@ public class ExpenditureServiceImpl implements ExpenditureService{
     private final Logger LOGGER = LoggerFactory.getLogger(ExpenditureServiceImpl.class);
     
     @Override
-    public Expenditure createExpenditure(Expenditure expenditure) {
-        var operator = operatorRepo.findByEmail(expenditure.getOperatorEmail());//get operator associated to this mail
-        expenditure.setOperator(operator);//set the ssociated operator tp this expenditure
-        var site = siteRepo.findBySiteCode(expenditure.getSiteCode());//get site associated to this expenditure
-        expenditure.setSite(site);//set the associated site to this expenditure
-        expenditure.setEnumType(ExpenditureType.values()[expenditure.getType()]);
-        expenditure.setEnumStatus(ExpenditureStatus.values()[expenditure.getStatus()]);
-        expenditure.setEnumMonth(Months.values()[expenditure.getMonth()-1]);
-        var expp = expenditureRepo.saveAndFlush(expenditure);
-        var recipients = operator.getRecipient(); //get list of recipients associated to the Operator
-        try{
-            var message = new SimpleMailMessage();//create simple message instance
-            var template = expp.toString();//build template message from toString
-            if(recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
-                var recp = new String[recipients.size()];//create empty array of recipients
-                recipients.forEach((r) -> {
-                    recp[recipients.indexOf(r)] = r.getEmail();
-                });
-                message.setTo(recp);
-            }else{
-                message.setTo(expp.getOperatorEmail());//default send message to the email associated to the operator
-            }  
-            message.setSubject("Your Company created an expenditure record with the following details: "); 
-            message.setText(template);
-            emailSender.send(message);
-        }catch(MailException e){
-            LOGGER.error(Marker.ANY_MARKER, e.getMessage());
-        }
-        
-        
-        return expp;     
+    public Expenditure createExpenditure(Expenditure newExpenditure) {
+        var operator = operatorRepo.findByEmail(newExpenditure.getOperatorEmail());//get operator associated to this mail
+        newExpenditure.setOperator(operator);//set the ssociated operator tp this newExpenditure
+        var site = siteRepo.findBySiteCode(newExpenditure.getSiteCode());//get site associated to this newExpenditure
+        newExpenditure.setSite(site);//set the associated site to this newExpenditure
+        newExpenditure.setEnumType(ExpenditureType.values()[newExpenditure.getType()]);
+        newExpenditure.setEnumStatus(ExpenditureStatus.values()[newExpenditure.getStatus()]);
+        newExpenditure.setEnumMonth(Months.values()[newExpenditure.getMonth()-1]);
+        var expenditure = expenditureRepo.saveAndFlush(newExpenditure);
+        sendExpenditureEmail(operator, expenditure, "Your Company created an expenditure record with the following details: ");  
+        return expenditure;     
     }
     @Override
     public Expenditure queryById(UUID id) {
@@ -97,7 +78,7 @@ public class ExpenditureServiceImpl implements ExpenditureService{
     }  
     @Override
         public Expenditure updateExpenditire(Expenditure newExpenditure) { 
-            var opp = operatorRepo.findByEmail(newExpenditure.getOperatorEmail());//get Operator associated with the new Expenditure
+            var operator = operatorRepo.findByEmail(newExpenditure.getOperatorEmail());//get Operator associated with the new Expenditure
             var existingExpenditure = expenditureRepo.findById(newExpenditure.getId()).get();
             existingExpenditure.setMonth(newExpenditure.getMonth());//reset month of existingExpenditure
             existingExpenditure.setType(newExpenditure.getType());//reset type of existingExpenditure
@@ -111,30 +92,31 @@ public class ExpenditureServiceImpl implements ExpenditureService{
             existingExpenditure.setEnumMonth(Months.values()[newExpenditure.getMonth()-1]);//reset emun month of existingExpenditure
             existingExpenditure.setName(newExpenditure.getName());//reset name of existingExpenditure
             existingExpenditure.setYear(newExpenditure.getYear());//reset year of existingExpenditure
-            existingExpenditure.setOperator(opp);//set the ssociated operator tp this expenditure
+            existingExpenditure.setOperator(operator);//set the ssociated operator tp this expenditure
             existingExpenditure.setSite(siteRepo.findBySiteCode(newExpenditure.getSiteCode()));//reset the associated site to this expenditure
             existingExpenditure.setDescription(newExpenditure.getDescription());//reset description of existingExpenditure             
-            var  expenditure = expenditureRepo.saveAndFlush(existingExpenditure);  
-            var recipients = opp.getRecipient(); //get list of recipients associated to the Operator of the new Expenditure
-                    try{
-                       var message = new SimpleMailMessage();//create simple message instance
-                       var template = expenditure.toString();//build template message from toString
-                       if(recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
-                            String[] recp = new String[recipients.size()];//create empty array of recipients
-                            recipients.forEach((r) -> {
-                               recp[recipients.indexOf(r)] = r.getEmail();
-                            });
-                            message.setTo(recp);
-                        }else{
-                            message.setTo(newExpenditure.getOperatorEmail());//default send message to the email associated to the new operator
-                            }  
-                        message.setSubject("Your Company updated an expenditure record with following details: "); 
-                        message.setText(template);
-                        emailSender.send(message);
-                        }catch(MailException e){
-                            LOGGER.error(Marker.ANY_MARKER, e.getMessage());
-                             }
+            var  expenditure = expenditureRepo.saveAndFlush(existingExpenditure); 
+            sendExpenditureEmail(operator, expenditure, "Your Company updated an expenditure record with following details: ");
             return expenditure;                     
-        }    
-    
+        }
+        
+    private void sendExpenditureEmail(Operator operator, Expenditure expenditure, String subject){
+        var recipients = operator.getRecipient(); //get list of recipients associated to the Operator of the new Expenditure
+        try{
+            var message = new SimpleMailMessage();//create simple message instance
+            var template = expenditure.toString();//build template message from toString
+            if(recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
+                var recp = new String[recipients.size()];//create empty array of recipients
+                recipients.forEach((r) -> {recp[recipients.indexOf(r)] = r.getEmail();});
+                message.setTo(recp);
+            }else{
+                message.setTo(expenditure.getOperatorEmail());//default send message to the email associated to the operator
+            }  
+            message.setSubject(subject); 
+            message.setText(template);
+            emailSender.send(message);
+        }catch(MailException e){
+            LOGGER.error(Marker.ANY_MARKER, e.getMessage());
+        }        
+    }    
 }

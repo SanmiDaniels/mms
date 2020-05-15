@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import ng.com.codetrik.mms.model.entity.Operator;
 import ng.com.codetrik.mms.model.entity.Site;
 import ng.com.codetrik.mms.repository.OperatorRepository;
 import ng.com.codetrik.mms.repository.SiteRepository;
@@ -39,25 +40,7 @@ JavaMailSender emailSender;
         var operator = operatorRepo.findByEmail(newSite.getOperatorEmail());//first obtain the operator to be mapped to this newSite
         newSite.setOperator(operator);//set operator associated to this newSite
         var site =  siteRepo.saveAndFlush(newSite);
-        var recipients = operator.getRecipient(); //get list of recipients associated to the Operator        
-        try{
-            var message = new SimpleMailMessage();//create simple message instance
-            var template = site.toString();//build template message from toString
-            if(recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
-                var recp = new String[recipients.size()];//create empty array of recipients
-                recipients.forEach((r) -> {
-                    recp[recipients.indexOf(r)] = r.getEmail();
-                });
-                message.setTo(recp);
-            }else{
-                message.setTo(newSite.getOperatorEmail());//default send message to the email associated to the operator
-            }  
-            message.setSubject("Your Company added a new site with the following details: "); 
-            message.setText(template);
-            emailSender.send(message);
-        }catch(MailException e){
-            LOGGER.error(Marker.ANY_MARKER, e.getMessage());
-        }         
+        sendSiteEmail(operator, site, "Your Company added a new site with the following details: ");          
         return site;
         
     }
@@ -105,25 +88,7 @@ JavaMailSender emailSender;
         existingSite.setSiteCode(newSite.getSiteCode());
         existingSite.setOperator(operator);
         var site = siteRepo.saveAndFlush(existingSite);
-        var recipients = operator.getRecipient(); //get list of recipients associated to the Operator        
-        try{
-            var message = new SimpleMailMessage();//create simple message instance
-            var template = site.toString();//build template message from toString
-            if(recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
-                var recp = new String[recipients.size()];//create empty array of recipients
-                recipients.forEach((r) -> {
-                    recp[recipients.indexOf(r)] = r.getEmail();
-                });
-                message.setTo(recp);
-            }else{
-                message.setTo(newSite.getOperatorEmail());//default send message to the email associated to the operator
-            }  
-            message.setSubject("Your Company updated a site with the following details: "); 
-            message.setText(template);
-            emailSender.send(message);
-        }catch(MailException e){
-            LOGGER.error(Marker.ANY_MARKER, e.getMessage());
-        } 
+        sendSiteEmail(operator, site, "Your Company updated a site with the following details: "); 
         return site;
     }
 
@@ -131,9 +96,7 @@ JavaMailSender emailSender;
     public List<String> allThisOperatorSiteCode(String operatorEmail) {
         var sites = operatorRepo.findByEmail(operatorEmail).getSite();
         List<String> siteCodeList = new ArrayList<>();
-        sites.forEach((s)->{
-            siteCodeList.add(s.getSiteCode());
-        });
+        sites.forEach((s)-> {siteCodeList.add(s.getSiteCode());});
         return siteCodeList;
     }
 
@@ -141,10 +104,7 @@ JavaMailSender emailSender;
     public List<String> allThisOperatorSite(String operatorEmail) {
         var sites = operatorRepo.findByEmail(operatorEmail).getSite();
         List<String> siteNameList = new ArrayList<>();
-        sites.forEach((s)->{
-            siteNameList.add(s.getName());
-        });
-        
+        sites.forEach((s)->{siteNameList.add(s.getName());});
         return siteNameList;
     }
 
@@ -152,10 +112,29 @@ JavaMailSender emailSender;
     public Map<String, String> allThisOperatorSiteCodeAndSite(String operatorEmail) {
         Map<String, String> siteCodeWithSite = new HashMap<>();
         var sites = operatorRepo.findByEmail(operatorEmail).getSite();
-        sites.forEach((s)->{
+        sites.forEach((s)-> {
             siteCodeWithSite.put(s.getSiteCode(), s.getName());
         });
         return siteCodeWithSite;
     }
     
+    private void sendSiteEmail(Operator operator, Site site, String subject){
+       var recipients = operator.getRecipient(); //get list of recipients associated to the Operator        
+        try{
+            var message = new SimpleMailMessage();//create simple message instance
+            var template = site.toString();//build template message from toString
+            if(recipients!=null){ //check if the list of recipient is null to avaoid null pointer exception
+                var recp = new String[recipients.size()];//create empty array of recipients
+                recipients.forEach((r) -> { recp[recipients.indexOf(r)] = r.getEmail();});
+                message.setTo(recp);
+            }else{
+                message.setTo(site.getOperatorEmail());//default send message to the email associated to the operator
+            }  
+            message.setSubject(subject); 
+            message.setText(template);
+            emailSender.send(message);
+        }catch(MailException e){
+            LOGGER.error(Marker.ANY_MARKER, e.getMessage());
+        }        
+    }
 }
