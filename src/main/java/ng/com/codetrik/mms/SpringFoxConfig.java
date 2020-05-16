@@ -28,8 +28,8 @@ public class SpringFoxConfig {
     }
     
     private ApiInfo apiEndPointsInfo() {
-        return new ApiInfoBuilder().title("APIs for Internry")
-                .description("RESTful APIs for Internry")
+        return new ApiInfoBuilder().title("Mini Grid Management System")
+                .description("RESTful APIs for MMS")
                 .license("Apache 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
                 .version("1.0.0")
