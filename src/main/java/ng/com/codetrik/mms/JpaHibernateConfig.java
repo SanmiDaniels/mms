@@ -30,7 +30,7 @@ public class JpaHibernateConfig {
         ds.setSchema("minigrid_management_system");
         ds.setUrl("jdbc:mysql://localhost:3306/minigrid_management_system?autoReconnect=true&serverTimezone=Africa/Lagos&useLegacyDatetimeCode=false");
         ds.setUsername("root");
-        ds.setPassword("codeTRIK1992.");
+        ds.setPassword("");
         return ds;
     }  
  
